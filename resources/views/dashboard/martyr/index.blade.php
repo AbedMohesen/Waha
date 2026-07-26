@@ -69,8 +69,7 @@
         search_form.onsubmit = function (e) {
             e.preventDefault();
             let text = input.value.trim();
-
-            if (!text) {
+            if (!text || text.length < 3) {
                 wrapper_navigation.innerHTML = '';
                 wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-amber-100 border border-amber-300 text-amber-800 text-center p-3 rounded-xl text-sm font-medium">الرجاء إدخال الاسم أو رقم الهوية للبدء بالبحث</p>`);
                 return;
@@ -116,7 +115,6 @@
                     // عرض بطاقات النتائج
                     let itemsData = data.data || [];
                     itemsData.forEach((d) => {
-                        console.log(d);
                         let url = `{{ url('/martyr') }}/${d.id}`;
                         let url_edit = `{{ url('/dashboard/martyr') }}/${d.id}/edit`;
                         let url_delete = `{{ url('/dashboard/martyr') }}/${d.id}`;
@@ -125,7 +123,7 @@
                         <p class="text-base sm:text-lg"> ${d.name_ar}</p>
                         <div>
                             <a href="${url_edit}"><button class="p-2 bg-green-500 rounded-2xl text-white px-4">Edit</button></a>
-                            <form action="${url_delete}" method="POST">
+                            <form class='inline' action="${url_delete}" method="POST">
                                 @csrf
                                 @method('delete')
                                 <button onclick="return confirm('Are you sure ?')" class="p-2 bg-red-500 rounded-2xl text-white px-4">Delete</button>

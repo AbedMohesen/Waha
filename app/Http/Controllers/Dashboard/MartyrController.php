@@ -61,7 +61,8 @@ class MartyrController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $martyr = Martyr::find($id);
+        return view('dashboard.martyr.edit', compact('martyr'));
     }
 
     /**
