@@ -21,6 +21,32 @@
     <div class="min-h-screen flex flex-col">
 
         <!-- ========================================== -->
+        <!-- START: AUTH NAVBAR -->
+        <!-- ========================================== -->
+        <nav class="bg-emerald-950 text-white border-b border-emerald-900 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16 sm:h-20">
+                    <a href="{{ route('front.index') }}"
+                        class="flex items-center gap-2.5 font-bold text-lg sm:text-xl text-amber-400 hover:text-amber-300 transition">
+                        <img class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover"
+                            src="{{ asset('assets/img/icon.png') }}"
+                            alt="شعار واحة الشهداء">
+                        <span class="tracking-wide">واحة الشهداء</span>
+                    </a>
+
+                    <a href="{{ route('front.index') }}"
+                        class="flex items-center gap-2 text-xs sm:text-sm text-gray-300 hover:text-amber-400 transition">
+                        <i class="fa-solid fa-arrow-right"></i>
+                        <span>العودة إلى الموقع</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <!-- ========================================== -->
+        <!-- END: AUTH NAVBAR -->
+        <!-- ========================================== -->
+
+        <!-- ========================================== -->
         <!-- START: AUTH CONTENT -->
         <!-- ========================================== -->
         <main class="relative flex-grow flex items-center justify-center overflow-hidden px-4 py-10 sm:py-14">
