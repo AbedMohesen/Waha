@@ -7,49 +7,57 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    function index()
+    public function index()
     {
         $featuredMartyrs = Martyr::inRandomOrder()->limit(4)->get();
 
         return view('front.index', compact('featuredMartyrs'));
     }
-    function martyr($id)
+
+    public function martyr($id)
     {
         $d = Martyr::where('id', $id)->first();
+
         return view('front.martyr', compact('d'));
     }
-    function search(Request $req)
+
+    public function search(Request $req)
     {
-        if (!$req->ajax()) {
-            return redirect()->route('front.index');
+        // 1. التحقق من الطلب أو المساعدة في حمايته دون إرجاع Redirect يفسد الـ Fetch
+        if (! $req->wantsJson() && ! $req->ajax()) {
+            return response()->json(['message' => 'Invalid Request'], 400);
         }
-        if (!filled($req->q)) {
-            return [];
+
+        $queryText = trim($req->q);
+
+        // 2. إرجاع نتيجة فارغة بهيكل صحيح وموحد إذا كان النص فارغاً
+        if (! filled($queryText)) {
+            return Martyr::query()->whereRaw('1 = 0')->paginate(27);
         }
-        if (is_numeric($req->q)) {
-            return response()->json([
-                'data' => Martyr::where('national_id', $req->q)->get(),
-            ]);
-        } else {
-            $names = explode(' ', trim($req->q));
-            $query = Martyr::query();
-            foreach ($names as $name) {
-                $query->where('name_ar', 'LIKE', "%{$name}%");
-            }
-            return $query->paginate(27);
+
+        // 3. توحيد بناء النتيجة بالـ paginate لكلا الحالتين (بالهوية أو بالاسم)
+        if (is_numeric($queryText)) {
+            return Martyr::query()
+                ->where('national_id', $queryText)
+                ->paginate(27);
         }
+
+        return Martyr::query()
+            ->searchArabicName($queryText)
+            ->paginate(27);
     }
-    function martyr_search()
+
+    public function martyr_search()
     {
         return view('front.search');
     }
 
-    function about()
+    public function about()
     {
         return view('front.about');
     }
 
-    function contact()
+    public function contact()
     {
         return view('front.contact');
     }

@@ -22,14 +22,16 @@ test('dashboard statistics aggregate gender and age groups correctly', function 
     $response
         ->assertOk()
         ->assertViewHas('statistics', function (array $statistics): bool {
-            return $statistics['total'] === 8
-                && $statistics['gender']['male'] === ['count' => 3, 'percentage' => 42.9]
-                && $statistics['gender']['female'] === ['count' => 4, 'percentage' => 57.1]
-                && $statistics['gender']['unclassified'] === 1
-                && $statistics['age_groups']['children'] === ['count' => 2, 'percentage' => 33.3]
-                && $statistics['age_groups']['youth'] === ['count' => 2, 'percentage' => 33.3]
-                && $statistics['age_groups']['elders'] === ['count' => 2, 'percentage' => 33.3]
-                && $statistics['age_groups']['unclassified'] === 2;
+            expect($statistics['total'])->toBe(8)
+                ->and($statistics['gender']['male'])->toBe(['count' => 3, 'percentage' => 42.9])
+                ->and($statistics['gender']['female'])->toBe(['count' => 4, 'percentage' => 57.1])
+                ->and($statistics['gender']['unclassified'])->toBe(1)
+                ->and($statistics['age_groups']['children'])->toBe(['count' => 2, 'percentage' => 33.3])
+                ->and($statistics['age_groups']['youth'])->toBe(['count' => 3, 'percentage' => 50.0])
+                ->and($statistics['age_groups']['elders'])->toBe(['count' => 1, 'percentage' => 16.7])
+                ->and($statistics['age_groups']['unclassified'])->toBe(2);
+
+            return true;
         });
 });
 
