@@ -1,7 +1,7 @@
 <x-guest-layout>
     <h1 class="text-xl m-4 text-center">تعديل بيانات شهيد </h1>
-    <form class="grid gap-8" method="POST" action="{{ route('dashboard.martyr.update') }}">
-        @csrf
+<form class="grid gap-8" method="POST" action="{{ route('dashboard.martyr.update', $martyr) }}">        @csrf
+    @method('PUT')
         <!-- national_id -->
         <div>
             <x-input-label for="national_id" :value="__('national_id')" />
@@ -47,7 +47,7 @@
 
         <div class="flex justify-between">
             <x-primary-button class="ms-3">
-                {{ __('Create') }}
+                {{ __('Update') }}
             </x-primary-button>
             <a href="{{ route('dashboard.martyr.index') }}">Cancel</a>
         </div>

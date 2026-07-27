@@ -116,12 +116,14 @@
                     let itemsData = data.data || [];
                     itemsData.forEach((d) => {
                         let url = `{{ url('/martyr') }}/${d.id}`;
+                        let url_show = `{{ url('/dashboard/martyr') }}/${d.id}`;
                         let url_edit = `{{ url('/dashboard/martyr') }}/${d.id}/edit`;
                         let url_delete = `{{ url('/dashboard/martyr') }}/${d.id}`;
                         let item = `<div
                         class="cursor-pointer bg-white hover:bg-emerald-50/50 border border-gray-200 hover:border-emerald-300 p-5 text-center rounded-2xl text-slate-800 hover:text-emerald-800 font-bold shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-center items-center gap-2 group">
                         <p class="text-base sm:text-lg"> ${d.name_ar}</p>
                         <div>
+                            <a href="${url_show}"><button type="button" class="p-2 bg-sky-600 rounded-2xl text-white px-4">View</button></a>
                             <a href="${url_edit}"><button class="p-2 bg-green-500 rounded-2xl text-white px-4">Edit</button></a>
                             <form class='inline' action="${url_delete}" method="POST">
                                 @csrf
@@ -187,6 +189,5 @@
     </script>
     </x-slot>
 </x-app-layout>
-
 
 

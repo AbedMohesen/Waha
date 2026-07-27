@@ -53,7 +53,9 @@ class MartyrController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $martyr = Martyr::findOrFail($id);
+
+        return view('dashboard.martyr.show', compact('martyr'));
     }
 
     /**
@@ -68,9 +70,26 @@ class MartyrController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Martyr $martyr)
     {
-        //
+        $request->validate([
+            'national_id' => 'required|max:9',
+            'name_ar' => 'required|string|min:2|max:250',
+            'sex' => 'required|max:1',
+            'age' => 'required|max:200',
+            'date_barth' => 'required|date',
+        ]);
+        $martyr->update([
+            'national_id' => $request->national_id,
+            'name_en' => $request->name_en,
+            'name_ar' => $request->name_ar,
+            'sex' => $request->sex,
+            'age' => $request->age,
+            'born' => $request->date_barth,
+        ]);
+
+        flash()->success('تم الاضافة بنجاح ');
+        return redirect()->route('dashboard.martyr.index');
     }
 
     /**
