@@ -32,13 +32,25 @@
 
                 <!-- Desktop Navigation Links -->
                 <div class="hidden md:flex items-center gap-8 space-x-reverse text-xl font-medium">
-                    <a href="{{ route('front.index') }}" class="text-amber-400 font-semibold py-2 border-b-2 border-amber-400">
+                    <a href="{{ route('front.index') }}" @class([
+                        'font-semibold py-2 border-b-2 transition',
+                        'text-amber-400 border-amber-400' => request()->routeIs('front.index'),
+                        'text-gray-300 border-transparent hover:text-amber-400 hover:border-amber-400' => !request()->routeIs('front.index'),
+                    ])>
                         الرئيسية
                     </a>
-                    <a href="#about-section" class="text-gray-300 hover:text-amber-400 transition py-2 border-b-2 border-transparent hover:border-amber-400">
+                    <a href="{{ route('front.about') }}" @class([
+                        'font-semibold py-2 border-b-2 transition',
+                        'text-amber-400 border-amber-400' => request()->routeIs('front.about'),
+                        'text-gray-300 border-transparent hover:text-amber-400 hover:border-amber-400' => !request()->routeIs('front.about'),
+                    ])>
                         من نحن
                     </a>
-                    <a href="#contact-section" class="text-gray-300 hover:text-amber-400 transition py-2 border-b-2 border-transparent hover:border-amber-400">
+                    <a href="{{ route('front.contact') }}" @class([
+                        'font-semibold py-2 border-b-2 transition',
+                        'text-amber-400 border-amber-400' => request()->routeIs('front.contact'),
+                        'text-gray-300 border-transparent hover:text-amber-400 hover:border-amber-400' => !request()->routeIs('front.contact'),
+                    ])>
                         اتصل بنا
                     </a>
                 </div>
@@ -51,7 +63,7 @@
                     </a>
 
                     <!-- Mobile Menu Button -->
-                    <button id="mobile-menu-btn" type="button" aria-label="القائمة" class="md:hidden text-gray-300 hover:text-white p-2 rounded-lg focus:outline-none">
+                    <button id="mobile-menu-btn" type="button" aria-label="القائمة" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden text-gray-300 hover:text-white p-2 rounded-lg focus:outline-none">
                         <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
                     </button>
                 </div>
@@ -61,9 +73,21 @@
 
         <!-- Mobile Navigation Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-emerald-900 border-t border-emerald-800 px-4 pt-3 pb-4 space-y-2 text-sm">
-            <a href="{{ route('front.index') }}" class="block px-3 py-2 rounded-lg font-medium text-amber-400 bg-emerald-950">الرئيسية</a>
-            <a href="#about-section" class="block px-3 py-2 rounded-lg font-medium text-gray-200 hover:text-amber-300 hover:bg-emerald-800 transition">من نحن</a>
-            <a href="#contact-section" class="block px-3 py-2 rounded-lg font-medium text-gray-200 hover:text-amber-300 hover:bg-emerald-800 transition">اتصل بنا</a>
+            <a href="{{ route('front.index') }}" @class([
+                'block px-3 py-2 rounded-lg font-medium transition',
+                'text-amber-400 bg-emerald-950' => request()->routeIs('front.index'),
+                'text-gray-200 hover:text-amber-300 hover:bg-emerald-800' => !request()->routeIs('front.index'),
+            ])>الرئيسية</a>
+            <a href="{{ route('front.about') }}" @class([
+                'block px-3 py-2 rounded-lg font-medium transition',
+                'text-amber-400 bg-emerald-950' => request()->routeIs('front.about'),
+                'text-gray-200 hover:text-amber-300 hover:bg-emerald-800' => !request()->routeIs('front.about'),
+            ])>من نحن</a>
+            <a href="{{ route('front.contact') }}" @class([
+                'block px-3 py-2 rounded-lg font-medium transition',
+                'text-amber-400 bg-emerald-950' => request()->routeIs('front.contact'),
+                'text-gray-200 hover:text-amber-300 hover:bg-emerald-800' => !request()->routeIs('front.contact'),
+            ])>اتصل بنا</a>
         </div>
     </nav>
     <!-- ========================================== -->
@@ -94,7 +118,8 @@
                     <h4 class="text-sm font-semibold text-white mb-4 border-r-2 border-amber-400 pr-2">روابط سريعة</h4>
                     <ul class="space-y-2.5 text-xs text-gray-300">
                         <li><a href="{{ route('front.index') }}" class="hover:text-amber-400 transition flex items-center gap-1.5"><i class="fa-solid fa-angle-left text-[10px]"></i> الرئيسية</a></li>
-                        <li><a href="#about-section" class="hover:text-amber-400 transition flex items-center gap-1.5"><i class="fa-solid fa-angle-left text-[10px]"></i> من نحن</a></li>
+                        <li><a href="{{ route('front.about') }}" class="hover:text-amber-400 transition flex items-center gap-1.5"><i class="fa-solid fa-angle-left text-[10px]"></i> من نحن</a></li>
+                        <li><a href="{{ route('front.contact') }}" class="hover:text-amber-400 transition flex items-center gap-1.5"><i class="fa-solid fa-angle-left text-[10px]"></i> اتصل بنا</a></li>
                         <li><a href="#search-section" class="hover:text-amber-400 transition flex items-center gap-1.5"><i class="fa-solid fa-angle-left text-[10px]"></i> محرك البحث</a></li>
                     </ul>
                 </div>
@@ -141,6 +166,20 @@
     <!-- START: JAVASCRIPT LOGIC -->
     <!-- ========================================== -->
     @yield('js')
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuButton?.addEventListener('click', () => {
+            const isOpen = !mobileMenu.classList.contains('hidden');
+
+            mobileMenu.classList.toggle('hidden', isOpen);
+            mobileMenuButton.setAttribute('aria-expanded', String(!isOpen));
+            menuIcon.classList.toggle('fa-bars', isOpen);
+            menuIcon.classList.toggle('fa-xmark', !isOpen);
+        });
+    </script>
     <!-- ========================================== -->
     <!-- END: JAVASCRIPT LOGIC -->
     <!-- ========================================== -->

@@ -8,6 +8,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('front.index');
+Route::get('/about', [MainController::class, 'about'])->name('front.about');
+Route::get('/contact', [MainController::class, 'contact'])->name('front.contact');
 Route::get('/martyr_search', [MainController::class, 'martyr_search'])->name('front.search');
 Route::get('/search', [MainController::class, 'search'])->name('search');
 Route::get('/martyr/{id?}', [MainController::class, 'martyr'])->name('martyr');

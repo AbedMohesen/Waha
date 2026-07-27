@@ -53,8 +53,41 @@
             </a>
         </div>
 
-        <!-- شبكة بطاقات الشهداء (سيتم جلبها ديناميكياً من الداتابيز لاحقاً) -->
+        <!-- شبكة بطاقات الشهداء -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            @forelse ($featuredMartyrs as $martyr)
+                <article
+                    class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
+                    <div class="p-5 text-center">
+                        <div
+                            class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
+                            <i class="fa-solid fa-user-shield text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition" dir="rtl">
+                            {{ $martyr->name_ar }}
+                        </h3>
+                        @if ($martyr->name_en)
+                            <p class="text-xs text-gray-500 mb-3">{{ $martyr->name_en }}</p>
+                        @endif
+                        <span
+                            class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">
+                            العمر: {{ $martyr->age ?: '-' }}
+                        </span>
+                    </div>
+                    <a href="{{ route('martyr', $martyr->id) }}"
+                        class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
+                        عرض التفاصيل الكاملة &larr;
+                    </a>
+                </article>
+            @empty
+                <p class="col-span-full rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
+                    لا توجد سجلات لعرضها حالياً.
+                </p>
+            @endforelse
+        </div>
+
+        <!-- التصميم التجريبي السابق محفوظ مؤقتاً للرجوع إليه عند الحاجة. -->
+        <div class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <!-- بطاقة تجريبية 1 -->
             <div

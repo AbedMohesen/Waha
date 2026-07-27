@@ -9,7 +9,9 @@ class MainController extends Controller
 {
     function index()
     {
-        return view('front.index');
+        $featuredMartyrs = Martyr::inRandomOrder()->limit(4)->get();
+
+        return view('front.index', compact('featuredMartyrs'));
     }
     function martyr($id)
     {
@@ -40,5 +42,15 @@ class MainController extends Controller
     function martyr_search()
     {
         return view('front.search');
+    }
+
+    function about()
+    {
+        return view('front.about');
+    }
+
+    function contact()
+    {
+        return view('front.contact');
     }
 }
