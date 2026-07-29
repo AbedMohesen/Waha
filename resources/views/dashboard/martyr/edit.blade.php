@@ -26,8 +26,12 @@
         <!-- sex -->
         <div>
             <x-input-label for="sex" :value="__('sex')" />
-            <x-text-input id="sex" class="block mt-1 w-full" type="text" name="sex" :value="$martyr->sex" required
-                autofocus autocomplete="username" />
+            <select required name="sex" id="sex"
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                required>
+                <option @selected($martyr->sex === 'm') value="m">male</option>
+                <option @selected($martyr->sex === 'f') value="f">female</option>
+            </select>
             <x-input-error :messages="$errors->get('sex')" class="mt-2" />
         </div>
         <!-- age -->

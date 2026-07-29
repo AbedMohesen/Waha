@@ -28,7 +28,7 @@ class Martyr extends Model
         foreach ($terms as $term) {
             $query->whereRaw(
                 "name_ar_normalized LIKE ? ESCAPE '!'",
-                ['%'.ArabicText::escapeLike($term).'%']
+                ['%' . ArabicText::escapeLike($term) . '%']
             );
         }
 
@@ -37,7 +37,7 @@ class Martyr extends Model
 
     public function momeriesImg()
     {
-        return $this->hasOne(MomeriesImg::class)->withDefault();
+        return $this->hasMany(MomeriesImg::class);
     }
 
     public function profileImg()

@@ -41,8 +41,8 @@
             <!-- إطار الصورة الشخصية بألوان طبيعية حية وبدون رمادي -->
             <div
                 class="w-36 h-36 mx-auto rounded-full border-4 border-white/40 p-1 bg-white/20 shadow-2xl mb-6 overflow-hidden transition-transform hover:scale-105 duration-300">
-                <img src="{{ asset('assets/img/No-photo-m.png') }}"
-                    alt="صورة الشهيد" class="w-full h-full object-cover">
+                <img src="{{ asset('assets/img/' . ($d->profileImg->img_path ?? 'No-photo-m.png')) }}" alt="صورة الشهيد"
+                    class="w-full h-full object-cover">
             </div>
 
             <!-- أسماء الشهيد (العربي والإنجليزي) -->
@@ -102,33 +102,40 @@
     <main class="max-w-4xl mx-auto px-4 py-12 space-y-16">
 
         <!-- قسم عن حياة الشهيد وأثره -->
-        <section id="biography" class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-            <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-4 text-slate-900">نبذة عن حياته</h2>
-            <p class="text-slate-600 leading-relaxed text-sm md:text-base">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ex nulla harum iusto libero accusamus ratione laboriosam doloremque quia doloribus ea ipsa vel dolore atque deserunt animi assumenda nam eum repudiandae consequatur, molestias illo? Minus, aliquid. Quo culpa, reiciendis similique optio distinctio voluptatem minima nihil, blanditiis nemo facilis sint labore doloribus illo exercitationem eligendi modi. Laboriosam ipsam itaque deleniti, expedita dolorem neque eaque aut incidunt ducimus sunt quibusdam laborum totam veniam, consequuntur asperiores nobis laudantium rerum provident saepe excepturi ad nulla non a! Aliquam inventore minima corrupti laudantium, consequuntur id est atque dolore et quibusdam veniam hic! Reprehenderit laudantium blanditiis autem.
-            </p>
-        </section>
+        @if ($d->story->id)
+            <section id="biography" class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-4 text-slate-900">{{ $d->story->title }}</h2>
+                <p class="text-slate-600 leading-relaxed text-sm md:text-base">{{ $d->story->content }}</p>
+            </section>
+        @endif
+        @if ($d->momeriesImg->count())
 
-        <!-- معرض الصور والذكريات -->
-        <section id="gallery">
-            <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-6 text-slate-900">معرض الذاكرة</h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="overflow-hidden rounded-xl bg-slate-200 aspect-square flex items-center justify-center text-slate-400 text-xs p-4 text-center border border-dashed border-slate-300">
-                    [ مكان مخصص لصورة من الطفولة أو الشباب ]
-                </div>
-                <div class="overflow-hidden rounded-xl bg-slate-200 aspect-square flex items-center justify-center text-slate-400 text-xs p-4 text-center border border-dashed border-slate-300">
-                    [ مكان مخصص لصورة مع العائلة أو الأصدقاء ]
-                </div>
-                <div class="overflow-hidden rounded-xl bg-slate-200 aspect-square flex items-center justify-center text-slate-400 text-xs p-4 text-center border border-dashed border-slate-300">
-                    [ مكان مخصص لصورة تعبيرية أو شهادة ]
-                </div>
-            </div>
-        </section>
+                            <!-- معرض الصور والذكريات -->
+                            <section id="gallery">
+                                <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-6 text-slate-900">معرض الذاكرة</h2>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    @foreach ($d->momeriesImg as $img)
+                                        <div
+                                            class="overflow-hidden rounded-xl bg-slate-200 aspect-square border border-slate-300 shadow-sm hover:shadow-md transition-shadow">
+                                            <img src="{{ asset('assets/img/' . ($img->img_path ?? 'no-img.jpg')) }}" alt="صورة من الذاكرة"
+                                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                        </div>
 
+                                    @endforeach
+
+                                </div>
+                            </section>
+        @endif
         <!-- جدار التعازي والمواساة -->
         <section id="messages" class="space-y-6">
             <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 text-slate-900">دفتر الذكريات والتعازي الكتروني</h2>
-
+@if($d->condolence->id)
+    <section id="biography" class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+        <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-4 text-slate-900">{{ $d->condolence->author_name }}
+        </h2>
+        <p class="text-slate-600 leading-relaxed text-sm md:text-base">{{ $d->condolence->content }}</p>
+    </section>
+@endif
             <!-- نموذج إرسال كلمة تعزية -->
             <form class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
                 <h3 class="font-bold text-slate-800 text-xs md:text-sm">شارك العائلة بكلمة مواساة أو ذكرى طيبة:</h3>
@@ -140,7 +147,6 @@
                 <button type="button" class="bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs py-2.5 px-6 rounded-lg transition-colors shadow-sm">إرسال الكلمة</button>
             </form>
         </section>
-
     </main>
 
     <!-- تذييل الصفحة -->

@@ -28,28 +28,7 @@
             <div class="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl"></div>
             <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl"></div>
 
-            <div class="relative w-full max-w-md">
-                <div class="text-center mb-7">
-                    <div
-                        class="w-20 h-20 mx-auto mb-4 rounded-full bg-white/10 border border-white/10 flex items-center justify-center shadow-lg">
-                        <img class="w-16 h-16 rounded-full object-cover"
-                            src="{{ asset('assets/img/icon.png') }}"
-                            alt="شعار واحة الشهداء">
-                    </div>
-
-                    <span class="text-amber-400 text-xs font-bold tracking-widest">
-                        بوابة الإدارة
-                    </span>
-
-                    <h1 class="mt-2 text-2xl sm:text-3xl font-bold text-white">
-                        واحة الشهداء
-                    </h1>
-
-                    <p class="mt-2 text-sm text-gray-300">
-                        الدخول المخصص لإدارة محتوى المنصة
-                    </p>
-                </div>
-
+            <div class="relative w-full max-w-md ">
                 <div class="bg-white rounded-2xl border border-gray-200 shadow-2xl overflow-hidden">
                     <div class="h-1.5 bg-gradient-to-r from-emerald-700 via-amber-500 to-emerald-700"></div>
 
@@ -57,21 +36,11 @@
                         {{ $slot }}
                     </div>
                 </div>
-
-                <p class="mt-6 text-center text-xs text-gray-400">
-                    جميع عمليات الدخول خاضعة للحماية والتوثيق
-                </p>
             </div>
         </main>
         <!-- ========================================== -->
         <!-- END: AUTH CONTENT -->
         <!-- ========================================== -->
-
-        <footer class="bg-emerald-950 border-t border-emerald-900 py-5">
-            <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-400">
-                &copy; {{ date('Y') }} واحة الشهداء. جميع الحقوق محفوظة.
-            </div>
-        </footer>
     </div>
 </body>
 </html>

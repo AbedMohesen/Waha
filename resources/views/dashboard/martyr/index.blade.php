@@ -104,7 +104,6 @@
                 })
                 .then(data => {
                     console.log(data);
-
                     let totalCount = data.total || 0;
                     wrapper_count.insertAdjacentHTML('afterbegin', `عدد نتائج البحث: (<span class="text-emerald-700 font-bold">${totalCount}</span>)`);
 
