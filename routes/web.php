@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\MartyrController;
+use App\Http\Controllers\Dashboard\StoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\MainController;
@@ -21,6 +22,8 @@ Route::get('/martyr/{id?}', [MainController::class, 'martyr'])->name('martyr');
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [DashboardController::class, 'dashboard'])->name('index');
     Route::resource('/martyr', MartyrController::class);
+    Route::post('/martyr/{martyr}/story', [StoryController::class, 'store'])
+        ->name('martyr.story.store');
 });
 
 Route::middleware('auth')->group(function () {

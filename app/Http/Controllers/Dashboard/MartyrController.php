@@ -51,9 +51,9 @@ class MartyrController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Martyr $martyr)
     {
-        $martyr = Martyr::findOrFail($id);
+        $martyr->loadMissing('story');
 
         return view('dashboard.martyr.show', compact('martyr'));
     }
