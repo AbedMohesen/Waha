@@ -47,6 +47,15 @@ return [
             'report' => false,
         ],
 
+        'martyr_images' => [
+            'driver' => 'local',
+            'root' => public_path('assets/img'),
+            'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/assets/img',
+            'visibility' => 'public',
+            'throw' => true,
+            'report' => true,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

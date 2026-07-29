@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Martyr;
+use App\Models\Story;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,11 +59,56 @@ class StoryController extends Controller
             return true;
         });
 
-        if (!$storyCreated) {
+        if (! $storyCreated) {
             return $this->redirectWithExistingStory($martyr);
         }
 
         flash()->success('تمت إضافة قصة الشهيد بنجاح.');
+
+        return redirect()->route('dashboard.martyr.show', $martyr);
+    }
+
+    public function update(Request $request, Martyr $martyr, Story $story): RedirectResponse
+    {
+        $ownedStory = $this->ownedStory($martyr, $story);
+
+        $validator = Validator::make(
+            $request->only(['title', 'content']),
+            [
+                'title' => ['required', 'string'],
+                'content' => ['required', 'string'],
+            ],
+            [
+                'title.required' => 'عنوان القصة مطلوب.',
+                'title.string' => 'يجب أن يكون عنوان القصة نصًا.',
+                'content.required' => 'نص القصة مطلوب.',
+                'content.string' => 'يجب أن يكون محتوى القصة نصًا.',
+            ],
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                ->route('dashboard.martyr.show', $martyr)
+                ->withErrors($validator, 'storyUpdate')
+                ->withInput([
+                    'title' => is_string($request->input('title')) ? $request->input('title') : '',
+                    'content' => is_string($request->input('content')) ? $request->input('content') : '',
+                ]);
+        }
+
+        $ownedStory->update($validator->validated());
+
+        flash()->success('تم تعديل قصة الشهيد بنجاح.');
+
+        return redirect()->route('dashboard.martyr.show', $martyr);
+    }
+
+    public function destroy(Martyr $martyr, Story $story): RedirectResponse
+    {
+        $ownedStory = $this->ownedStory($martyr, $story);
+        $ownedStory->delete();
+
+        flash()->success('تم حذف قصة الشهيد بنجاح.');
 
         return redirect()->route('dashboard.martyr.show', $martyr);
     }
@@ -72,5 +118,12 @@ class StoryController extends Controller
         flash()->error('توجد قصة مضافة لهذا الشهيد بالفعل.');
 
         return redirect()->route('dashboard.martyr.show', $martyr);
+    }
+
+    private function ownedStory(Martyr $martyr, Story $story): Story
+    {
+        return $martyr->story()
+            ->whereKey($story->getKey())
+            ->firstOrFail();
     }
 }

@@ -52,6 +52,6 @@ class Martyr extends Model
 
     public function condolence()
     {
-        return $this->hasOne(Condolence::class)->withDefault();
+        return $this->hasMany(Condolence::class);
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Dashboard\MartyrController;
+use App\Http\Controllers\Dashboard\MomeriesImgController;
+use App\Http\Controllers\Dashboard\ProfileImgController;
 use App\Http\Controllers\Dashboard\StoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExcelController;
@@ -24,6 +26,18 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth', 'verified'])
     Route::resource('/martyr', MartyrController::class);
     Route::post('/martyr/{martyr}/story', [StoryController::class, 'store'])
         ->name('martyr.story.store');
+    Route::put('/martyr/{martyr}/story/{story}', [StoryController::class, 'update'])
+        ->name('martyr.story.update');
+    Route::delete('/martyr/{martyr}/story/{story}', [StoryController::class, 'destroy'])
+        ->name('martyr.story.destroy');
+    Route::put('/martyr/{martyr}/profile-image', [ProfileImgController::class, 'update'])
+        ->name('martyr.profile-image.update');
+    Route::delete('/martyr/{martyr}/profile-image', [ProfileImgController::class, 'destroy'])
+        ->name('martyr.profile-image.destroy');
+    Route::post('/martyr/{martyr}/memories', [MomeriesImgController::class, 'store'])
+        ->name('martyr.memories.store');
+    Route::delete('/martyr/{martyr}/memories/{memory}', [MomeriesImgController::class, 'destroy'])
+        ->name('martyr.memories.destroy');
 });
 
 Route::middleware('auth')->group(function () {

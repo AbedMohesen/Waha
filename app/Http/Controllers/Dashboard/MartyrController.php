@@ -53,7 +53,7 @@ class MartyrController extends Controller
      */
     public function show(Martyr $martyr)
     {
-        $martyr->loadMissing('story');
+        $martyr->loadMissing(['story', 'profileImg', 'momeriesImg']);
 
         return view('dashboard.martyr.show', compact('martyr'));
     }
