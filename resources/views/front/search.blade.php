@@ -136,7 +136,7 @@
             wrapper_count.innerHTML = '';
             pagination_container.innerHTML = '';
 
-            fetch(`{{ route('search') }}?q=${encodeURIComponent(text)}&page=${page}`, {
+            fetch(`{{ route('search', [], false) }}?q=${encodeURIComponent(text)}&page=${page}`, {
                 method: 'GET',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest', // ترويسة هامة للتحقق من طلب الـ AJAX في لارافيل
