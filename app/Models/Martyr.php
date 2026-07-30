@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Support\ArabicText;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Martyr extends Model
 {
@@ -28,7 +29,7 @@ class Martyr extends Model
         foreach ($terms as $term) {
             $query->whereRaw(
                 "name_ar_normalized LIKE ? ESCAPE '!'",
-                ['%' . ArabicText::escapeLike($term) . '%']
+                ['%'.ArabicText::escapeLike($term).'%']
             );
         }
 
@@ -50,7 +51,7 @@ class Martyr extends Model
         return $this->hasOne(Story::class)->withDefault();
     }
 
-    public function condolence()
+    public function condolences(): HasMany
     {
         return $this->hasMany(Condolence::class);
     }

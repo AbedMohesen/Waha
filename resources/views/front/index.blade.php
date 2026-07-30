@@ -56,13 +56,23 @@
         <!-- شبكة بطاقات الشهداء -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             @forelse ($featuredMartyrs as $martyr)
+                @php
+                    $profilePath = $martyr->profileImg?->img_path;
+                    $profileExists = filled($profilePath)
+                        && \Illuminate\Support\Facades\Storage::disk('martyr_images')->exists($profilePath);
+                    $profileUrl = $profileExists
+                        ? asset('assets/img/' . ltrim(str_replace('\\', '/', $profilePath), '/'))
+                        : asset('assets/img/No-photo-m.png');
+                @endphp
+
                 <article
                     class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
                     <div class="p-5 text-center">
-                        <div
-                            class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
-                            <i class="fa-solid fa-user-shield text-2xl"></i>
-                        </div>
+                        <img
+                            src="{{ $profileUrl }}"
+                            alt="صورة الشهيد {{ $martyr->name_ar }}"
+                            class="mx-auto mb-4 h-20 w-20 rounded-full border-2 border-emerald-100 bg-emerald-50 object-cover"
+                        >
                         <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition" dir="rtl">
                             {{ $martyr->name_ar }}
                         </h3>
@@ -81,97 +91,11 @@
                 </article>
             @empty
                 <p class="col-span-full rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
-                    لا توجد سجلات لعرضها حالياً.
+                    لم يتم اختيار شهداء مميزين حتى الآن.
                 </p>
             @endforelse
         </div>
 
-        <!-- التصميم التجريبي السابق محفوظ مؤقتاً للرجوع إليه عند الحاجة. -->
-        <div class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <!-- بطاقة تجريبية 1 -->
-            <div
-                class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
-                <div class="p-5 text-center">
-                    <div
-                        class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
-                        <i class="fa-solid fa-user-shield text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition">الشهيد
-                        محمد أحمد علي</h3>
-                    <p class="text-xs text-gray-500 mb-3">تاريخ الاستشهاد: 2023/10/12</p>
-                    <span
-                        class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">القدس
-                        الشريف</span>
-                </div>
-                <a href="#"
-                    class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    عرض التفاصيل الكاملة &larr;
-                </a>
-            </div>
-
-            <!-- بطاقة تجريبية 2 -->
-            <div
-                class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
-                <div class="p-5 text-center">
-                    <div
-                        class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
-                        <i class="fa-solid fa-user-shield text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition">الشهيد
-                        يوسف إبراهيم محمود</h3>
-                    <p class="text-xs text-gray-500 mb-3">تاريخ الاستشهاد: 2024/01/05</p>
-                    <span
-                        class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">قطاع
-                        غزة</span>
-                </div>
-                <a href="#"
-                    class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    عرض التفاصيل الكاملة &larr;
-                </a>
-            </div>
-
-            <!-- بطاقة تجريبية 3 -->
-            <div
-                class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
-                <div class="p-5 text-center">
-                    <div
-                        class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
-                        <i class="fa-solid fa-user-shield text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition">الشهيد
-                        خالد عمر القاسم</h3>
-                    <p class="text-xs text-gray-500 mb-3">تاريخ الاستشهاد: 2023/11/20</p>
-                    <span
-                        class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">جنين</span>
-                </div>
-                <a href="#"
-                    class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    عرض التفاصيل الكاملة &larr;
-                </a>
-            </div>
-
-            <!-- بطاقة تجريبية 4 -->
-            <div
-                class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
-                <div class="p-5 text-center">
-                    <div
-                        class="w-20 h-20 bg-emerald-50 border-2 border-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-800 group-hover:bg-emerald-700 group-hover:text-white transition">
-                        <i class="fa-solid fa-user-shield text-2xl"></i>
-                    </div>
-                    <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition">الشهيد
-                        طارق حسن منصور</h3>
-                    <p class="text-xs text-gray-500 mb-3">تاريخ الاستشهاد: 2024/02/14</p>
-                    <span
-                        class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">نابلس</span>
-                </div>
-                <a href="#"
-                    class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                    عرض التفاصيل الكاملة &larr;
-                </a>
-            </div>
-
-        </div>
     </section>
     <!-- ========================================== -->
     <!-- END: FEATURED MARTYRS -->
@@ -189,69 +113,32 @@
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">أبرز القصص العطرة</h2>
             </div>
 
-            <!-- شبكة القصص -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <!-- قصة 1 -->
-                <article
-                    class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 text-xs text-amber-600 font-semibold mb-3">
-                            <i class="fa-solid fa-bookmark"></i>
-                            <span>قصة بطولة</span>
+                @forelse ($featuredStories as $story)
+                    <article
+                        class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 text-xs text-amber-600 font-semibold mb-3">
+                                <i class="fa-solid fa-bookmark"></i>
+                                <span>سيرة عطرة</span>
+                            </div>
+                            <h3 class="font-bold text-lg text-slate-800 mb-2 leading-snug">{{ $story->title }}</h3>
+                            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
+                                {{ \Illuminate\Support\Str::limit(strip_tags($story->content), 180) }}
+                            </p>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-800 mb-2 leading-snug">وصية الفجر الأخيرة</h3>
-                        <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                            كان يوصي الجميع بالحفاظ على الأرض والتراحم بين الناس، وترك خلفه إرثاً كبيراً من المحبة
-                            والأعمال الصالحة التي يذكرها أهل بلدته حتى اليوم...
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                        <span>عن الشهيد: أحمد المحمود</span>
-                        <a href="#" class="text-emerald-700 font-bold hover:underline">قراءة القصة</a>
-                    </div>
-                </article>
-
-                <!-- قصة 2 -->
-                <article
-                    class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 text-xs text-amber-600 font-semibold mb-3">
-                            <i class="fa-solid fa-bookmark"></i>
-                            <span>سيرة عطرة</span>
+                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between gap-3 text-xs text-gray-500">
+                            <span>عن الشهيد: {{ $story->martyr->name_ar }}</span>
+                            <a href="{{ route('martyr', $story->martyr) }}" class="shrink-0 text-emerald-700 font-bold hover:underline">
+                                قراءة القصة
+                            </a>
                         </div>
-                        <h3 class="font-bold text-lg text-slate-800 mb-2 leading-snug">معلم الأجيال والسند</h3>
-                        <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                            قضى حياته في تعليم أجيال القرية معنى الوفاء والانتماء، وعُرف بابتسامته التي لم تفارقه حتى
-                            لحظاته الأخيرة في ميدان العطاء...
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                        <span>عن الشهيد: د. صلاح الدين</span>
-                        <a href="#" class="text-emerald-700 font-bold hover:underline">قراءة القصة</a>
-                    </div>
-                </article>
-
-                <!-- قصة 3 -->
-                <article
-                    class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center gap-2 text-xs text-amber-600 font-semibold mb-3">
-                            <i class="fa-solid fa-bookmark"></i>
-                            <span>حكاية وفاء</span>
-                        </div>
-                        <h3 class="font-bold text-lg text-slate-800 mb-2 leading-snug">ابتسامة لا تغيب</h3>
-                        <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                            يروي رفاقه كيف كان يبعث الأمل في النفوس وقت الشدائد، وكيف ترك بصمة طيبة في كل بيت ومكان زاره
-                            طوال مسيرة حياته...
-                        </p>
-                    </div>
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
-                        <span>عن الشهيد: سامر الزيود</span>
-                        <a href="#" class="text-emerald-700 font-bold hover:underline">قراءة القصة</a>
-                    </div>
-                </article>
-
+                    </article>
+                @empty
+                    <p class="col-span-full rounded-xl bg-white p-6 text-center text-sm text-gray-500">
+                        لم يتم اختيار قصص مميزة حتى الآن.
+                    </p>
+                @endforelse
             </div>
         </div>
     </section>
@@ -270,53 +157,38 @@
             <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">أبرز الصور والتوثيقات</h2>
         </div>
 
-        <!-- معرض الصور (مكان مخصص لصور الأدمن) -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            @forelse ($featuredMemoryImages as $memoryImage)
+                @php
+                    $memoryPath = $memoryImage->img_path;
+                    $memoryExists = filled($memoryPath)
+                        && \Illuminate\Support\Facades\Storage::disk('martyr_images')->exists($memoryPath);
+                    $memoryUrl = $memoryExists
+                        ? asset('assets/img/' . ltrim(str_replace('\\', '/', $memoryPath), '/'))
+                        : asset('assets/img/No-photo-m.png');
+                @endphp
 
-            <div class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm">
-                <div
-                    class="w-full h-full bg-emerald-900/10 flex items-center justify-center text-emerald-800 group-hover:scale-105 transition duration-300">
-                    <i class="fa-solid fa-image text-4xl text-gray-400"></i>
-                </div>
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end text-white text-xs">
-                    <p class="font-bold">عنوان الصورة الموثقة</p>
-                </div>
-            </div>
-
-            <div class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm">
-                <div
-                    class="w-full h-full bg-emerald-900/10 flex items-center justify-center text-emerald-800 group-hover:scale-105 transition duration-300">
-                    <i class="fa-solid fa-image text-4xl text-gray-400"></i>
-                </div>
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end text-white text-xs">
-                    <p class="font-bold">عنوان الصورة الموثقة</p>
-                </div>
-            </div>
-
-            <div class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm">
-                <div
-                    class="w-full h-full bg-emerald-900/10 flex items-center justify-center text-emerald-800 group-hover:scale-105 transition duration-300">
-                    <i class="fa-solid fa-image text-4xl text-gray-400"></i>
-                </div>
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end text-white text-xs">
-                    <p class="font-bold">عنوان الصورة الموثقة</p>
-                </div>
-            </div>
-
-            <div class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm">
-                <div
-                    class="w-full h-full bg-emerald-900/10 flex items-center justify-center text-emerald-800 group-hover:scale-105 transition duration-300">
-                    <i class="fa-solid fa-image text-4xl text-gray-400"></i>
-                </div>
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-4 flex flex-col justify-end text-white text-xs">
-                    <p class="font-bold">عنوان الصورة الموثقة</p>
-                </div>
-            </div>
-
+                <a
+                    href="{{ route('martyr', $memoryImage->martyr) }}"
+                    class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm"
+                >
+                    <img
+                        src="{{ $memoryUrl }}"
+                        alt="{{ $memoryImage->caption ?: 'صورة ذكرى للشهيد '.$memoryImage->martyr->name_ar }}"
+                        class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    >
+                    <span class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/75 via-transparent to-transparent p-4 text-xs text-white">
+                        <strong>{{ $memoryImage->martyr->name_ar }}</strong>
+                        @if (filled($memoryImage->caption))
+                            <span class="mt-1 line-clamp-2">{{ $memoryImage->caption }}</span>
+                        @endif
+                    </span>
+                </a>
+            @empty
+                <p class="col-span-full rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
+                    لم يتم اختيار صور ذكريات مميزة حتى الآن.
+                </p>
+            @endforelse
         </div>
     </section>
     <!-- ========================================== -->

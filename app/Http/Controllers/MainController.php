@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FeaturedContent;
 use App\Models\Martyr;
 use Illuminate\Http\Request;
 
@@ -9,16 +10,59 @@ class MainController extends Controller
 {
     public function index()
     {
-        $featuredMartyrs = Martyr::inRandomOrder()->limit(4)->get();
+        $featuredMartyrs = FeaturedContent::query()
+            ->forSection(FeaturedContent::SECTION_MARTYRS)
+            ->with('martyr.profileImg')
+            ->latest()
+            ->limit(4)
+            ->get()
+            ->pluck('martyr')
+            ->filter();
+        $featuredStories = FeaturedContent::query()
+            ->forSection(FeaturedContent::SECTION_STORIES)
+            ->with('story.martyr.profileImg')
+            ->latest()
+            ->limit(3)
+            ->get()
+            ->pluck('story')
+            ->filter();
+        $featuredMemoryImages = FeaturedContent::query()
+            ->forSection(FeaturedContent::SECTION_MEMORY_IMAGES)
+            ->with('memoryImage.martyr')
+            ->latest()
+            ->limit(4)
+            ->get()
+            ->pluck('memoryImage')
+            ->filter();
 
-        return view('front.index', compact('featuredMartyrs'));
+        return view('front.index', compact(
+            'featuredMartyrs',
+            'featuredStories',
+            'featuredMemoryImages',
+        ));
     }
 
-    public function martyr($id)
+    public function martyr(Request $request, ?Martyr $martyr = null)
     {
-        $d = Martyr::where('id', $id)->first();
+        abort_unless($martyr?->exists, 404);
 
-        return view('front.martyr', compact('d'));
+        $martyr->loadMissing(['profileImg', 'story', 'momeriesImg']);
+
+        $approvedCondolences = $martyr->condolences()
+            ->approved()
+            ->oldest()
+            ->paginate(10, ['*'], 'condolences_page')
+            ->withQueryString();
+        $hasSubmittedCondolence = PublicCondolenceController::hasExistingSubmission(
+            $request,
+            $martyr,
+        );
+        $d = $martyr;
+
+        return view(
+            'front.martyr',
+            compact('d', 'approvedCondolences', 'hasSubmittedCondolence'),
+        );
     }
 
     public function search(Request $req)

@@ -128,24 +128,100 @@
         @endif
         <!-- جدار التعازي والمواساة -->
         <section id="messages" class="space-y-6">
-            <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 text-slate-900">دفتر الذكريات والتعازي الكتروني</h2>
-@if($d->condolence->id)
-    <section id="biography" class="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
-        <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 mb-4 text-slate-900">{{ $d->condolence->author_name }}
-        </h2>
-        <p class="text-slate-600 leading-relaxed text-sm md:text-base">{{ $d->condolence->content }}</p>
-    </section>
-@endif
-            <!-- نموذج إرسال كلمة تعزية -->
-            <form class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
-                <h3 class="font-bold text-slate-800 text-xs md:text-sm">شارك العائلة بكلمة مواساة أو ذكرى طيبة:</h3>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="الاسم الكريم" class="border border-slate-200 rounded-lg p-2.5 text-xs md:text-sm focus:outline-none focus:border-slate-500 bg-slate-50">
-                    <input type="text" placeholder="صلة القرابة أو الصداقة" class="border border-slate-200 rounded-lg p-2.5 text-xs md:text-sm focus:outline-none focus:border-slate-500 bg-slate-50">
+            <h2 class="text-xl font-bold border-r-4 border-slate-700 pr-3 text-slate-900">التعزيات</h2>
+
+            <div class="space-y-4">
+                @forelse ($approvedCondolences as $condolence)
+                    <article class="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+                        <div class="flex flex-col gap-2 border-b border-slate-100 pb-4 sm:flex-row sm:items-center sm:justify-between">
+                            <h3 class="font-bold text-slate-800">{{ $condolence->author_name ?: 'أحد الزوار' }}</h3>
+                            <time
+                                datetime="{{ $condolence->created_at->toIso8601String() }}"
+                                class="text-xs text-slate-400"
+                            >
+                                {{ $condolence->created_at->format('Y-m-d H:i') }}
+                            </time>
+                        </div>
+                        <p class="mt-4 whitespace-pre-line break-words text-sm leading-7 text-slate-600">{{ $condolence->content }}</p>
+                    </article>
+                @empty
+                    <div class="rounded-2xl border border-slate-100 bg-white p-6 text-sm text-slate-500 shadow-sm">
+                        لا توجد تعزيات منشورة حتى الآن.
+                    </div>
+                @endforelse
+            </div>
+
+            @if ($approvedCondolences->hasPages())
+                <div dir="rtl">
+                    {{ $approvedCondolences->links() }}
                 </div>
-                <textarea rows="3" placeholder="اكتب رسالتك هنا ليراها الجميع..." class="w-full border border-slate-200 rounded-lg p-2.5 text-xs md:text-sm focus:outline-none focus:border-slate-500 bg-slate-50"></textarea>
-                <button type="button" class="bg-slate-800 hover:bg-slate-900 text-white font-medium text-xs py-2.5 px-6 rounded-lg transition-colors shadow-sm">إرسال الكلمة</button>
-            </form>
+            @endif
+
+            @if ($errors->condolence->has('content'))
+                <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                    {{ $errors->condolence->first('content') }}
+                </div>
+            @endif
+
+            @if ($hasSubmittedCondolence)
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-sm leading-7 text-emerald-800 shadow-sm">
+                    لقد أرسلت تعزية لهذا الشهيد مسبقًا.
+                </div>
+            @else
+                <form
+                    method="POST"
+                    action="{{ route('martyr.condolences.store', $d) }}"
+                    class="space-y-5 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm"
+                >
+                    @csrf
+
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">إرسال تعزية</h3>
+                        <p class="mt-2 text-xs leading-6 text-slate-500">
+                            يمكنك كتابة رسالة تعزية، وستظهر بعد مراجعتها.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label for="condolence_author_name" class="mb-2 block text-xs font-semibold text-slate-700">
+                            الاسم الكريم (اختياري)
+                        </label>
+                        <input
+                            id="condolence_author_name"
+                            name="author_name"
+                            type="text"
+                            value="{{ old('author_name') }}"
+                            maxlength="255"
+                            class="w-full rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs focus:border-slate-500 focus:outline-none md:text-sm"
+                        >
+                        @if ($errors->condolence->has('author_name'))
+                            <p class="mt-2 text-xs text-rose-600">{{ $errors->condolence->first('author_name') }}</p>
+                        @endif
+                    </div>
+
+                    <div>
+                        <label for="condolence_content" class="mb-2 block text-xs font-semibold text-slate-700">
+                            رسالة التعزية
+                        </label>
+                        <textarea
+                            id="condolence_content"
+                            name="content"
+                            rows="5"
+                            maxlength="1000"
+                            required
+                            class="w-full rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs leading-7 focus:border-slate-500 focus:outline-none md:text-sm"
+                            placeholder="اكتب رسالة التعزية هنا..."
+                        >{{ old('content') }}</textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="rounded-lg bg-slate-800 px-6 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-slate-900"
+                    >
+                        إرسال التعزية
+                    </button>
+                </form>
+            @endif
         </section>
     </main>
 

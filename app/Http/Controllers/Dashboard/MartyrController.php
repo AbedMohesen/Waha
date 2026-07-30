@@ -45,6 +45,7 @@ class MartyrController extends Controller
             'born' => $request->date_barth,
         ]);
         flash()->success('تم الاضافة بنجاح ');
+
         return redirect()->route('dashboard.martyr.index');
     }
 
@@ -55,7 +56,12 @@ class MartyrController extends Controller
     {
         $martyr->loadMissing(['story', 'profileImg', 'momeriesImg']);
 
-        return view('dashboard.martyr.show', compact('martyr'));
+        $condolences = $martyr->condolences()
+            ->oldest()
+            ->paginate(10, ['*'], 'martyr_condolences_page')
+            ->withQueryString();
+
+        return view('dashboard.martyr.show', compact('martyr', 'condolences'));
     }
 
     /**
@@ -64,6 +70,7 @@ class MartyrController extends Controller
     public function edit(string $id)
     {
         $martyr = Martyr::find($id);
+
         return view('dashboard.martyr.edit', compact('martyr'));
     }
 
@@ -89,6 +96,7 @@ class MartyrController extends Controller
         ]);
 
         flash()->success('تم الاضافة بنجاح ');
+
         return redirect()->route('dashboard.martyr.index');
     }
 
@@ -99,6 +107,7 @@ class MartyrController extends Controller
     {
         $martyr = Martyr::find($id);
         $martyr->delete();
+
         return redirect()->route('dashboard.martyr.index');
     }
 }

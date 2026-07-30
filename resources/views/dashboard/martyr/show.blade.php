@@ -536,6 +536,88 @@
                     </div>
                 </form>
             </x-modal>
+
+            <section class="mt-6 overflow-hidden bg-white shadow-sm sm:rounded-2xl" dir="rtl">
+                <div class="border-b border-gray-200 bg-emerald-50 px-6 py-5">
+                    <h2 class="text-xl font-bold text-emerald-900">إدارة التعزيات</h2>
+                </div>
+
+                <div class="space-y-5 px-6 py-6">
+                    @forelse ($condolences as $condolence)
+                        <article class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                <div class="min-w-0 flex-1">
+                                    <div class="flex flex-wrap items-center gap-2">
+                                        @if (filled($condolence->author_name))
+                                            <h3 class="font-semibold text-gray-900">{{ $condolence->author_name }}</h3>
+                                        @endif
+
+                                        <span class="rounded-full px-3 py-1 text-xs font-bold {{ $condolence->status === 'pending'
+                                            ? 'bg-amber-100 text-amber-800'
+                                            : 'bg-emerald-100 text-emerald-800' }}">
+                                            {{ $condolence->status === 'pending' ? 'بانتظار المراجعة' : 'تمت الموافقة' }}
+                                        </span>
+                                    </div>
+
+                                    <time
+                                        datetime="{{ $condolence->created_at->toIso8601String() }}"
+                                        class="mt-2 block text-xs text-gray-400"
+                                    >
+                                        {{ $condolence->created_at->format('Y-m-d H:i') }}
+                                    </time>
+
+                                    <p class="mt-4 whitespace-pre-line break-words text-sm leading-7 text-gray-700">{{ $condolence->content }}</p>
+                                </div>
+
+                                <div class="flex shrink-0 flex-wrap items-center gap-2">
+                                    @if ($condolence->status === 'pending')
+                                        <form
+                                            method="POST"
+                                            action="{{ route('dashboard.martyr.condolences.approve', [$martyr, $condolence]) }}"
+                                        >
+                                            @csrf
+                                            @method('PATCH')
+
+                                            <button
+                                                type="submit"
+                                                class="rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                                            >
+                                                موافقة
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    <form
+                                        method="POST"
+                                        action="{{ route('dashboard.martyr.condolences.destroy', [$martyr, $condolence]) }}"
+                                        onsubmit="return confirm('هل أنت متأكد من حذف هذه التعزية نهائيًا؟')"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="rounded-lg border border-red-200 bg-white px-4 py-2 text-xs font-semibold text-red-700 transition hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                        >
+                                            حذف
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    @empty
+                        <p class="text-sm leading-7 text-gray-600">
+                            لا توجد أي تعزيات لهذا الشهيد.
+                        </p>
+                    @endforelse
+                </div>
+
+                @if ($condolences->hasPages())
+                    <div class="border-t border-gray-100 px-6 py-5">
+                        {{ $condolences->links() }}
+                    </div>
+                @endif
+            </section>
         </div>
     </div>
 </x-app-layout>

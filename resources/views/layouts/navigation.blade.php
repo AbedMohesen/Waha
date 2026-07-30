@@ -41,6 +41,32 @@
                     <span>إدارة الشهداء</span>
                 </a>
 
+                <a href="{{ route('dashboard.condolences.index') }}"
+                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+                    {{ request()->routeIs('dashboard.condolences.*')
+                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
+                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>مراجعة التعزيات</span>
+                    @if ($pendingCondolencesCount > 0)
+                        <span
+                            data-pending-condolences-count="{{ $pendingCondolencesCount }}"
+                            class="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white"
+                        >
+                            {{ $pendingCondolencesCount }}
+                        </span>
+                    @endif
+                </a>
+
+                <a href="{{ route('dashboard.homepage-content.index') }}"
+                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+                    {{ request()->routeIs('dashboard.homepage-content.*')
+                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
+                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
+                    <i class="fa-solid fa-house-circle-check"></i>
+                    <span>إدارة محتوى الصفحة الرئيسية</span>
+                </a>
+
                 <a href="{{ route('front.index') }}"
                     class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-300 hover:bg-emerald-900 hover:text-amber-400 transition">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
@@ -135,6 +161,32 @@
                     : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
                 <i class="fa-solid fa-user-shield w-5 text-center"></i>
                 <span>إدارة الشهداء</span>
+            </a>
+
+            <a href="{{ route('dashboard.condolences.index') }}"
+                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
+                {{ request()->routeIs('dashboard.condolences.*')
+                    ? 'bg-amber-500 text-emerald-950'
+                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
+                <i class="fa-solid fa-comments w-5 text-center"></i>
+                <span>مراجعة التعزيات</span>
+                @if ($pendingCondolencesCount > 0)
+                    <span
+                        data-pending-condolences-count="{{ $pendingCondolencesCount }}"
+                        class="mr-auto rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white"
+                    >
+                        {{ $pendingCondolencesCount }}
+                    </span>
+                @endif
+            </a>
+
+            <a href="{{ route('dashboard.homepage-content.index') }}"
+                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
+                {{ request()->routeIs('dashboard.homepage-content.*')
+                    ? 'bg-amber-500 text-emerald-950'
+                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
+                <i class="fa-solid fa-house-circle-check w-5 text-center"></i>
+                <span>إدارة محتوى الصفحة الرئيسية</span>
             </a>
 
             <a href="{{ route('front.index') }}"
