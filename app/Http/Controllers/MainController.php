@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FeaturedContent;
 use App\Models\Martyr;
 use Illuminate\Http\Request;
+use Throwable;
 
 class MainController extends Controller
 {
@@ -67,28 +68,33 @@ class MainController extends Controller
 
     public function search(Request $req)
     {
-        // 1. التحقق من الطلب أو المساعدة في حمايته دون إرجاع Redirect يفسد الـ Fetch
         if (! $req->wantsJson() && ! $req->ajax()) {
             return response()->json(['message' => 'Invalid Request'], 400);
         }
 
-        $queryText = trim($req->q);
+        $queryText = trim((string) $req->query('q', ''));
 
-        // 2. إرجاع نتيجة فارغة بهيكل صحيح وموحد إذا كان النص فارغاً
-        if (! filled($queryText)) {
-            return Martyr::query()->whereRaw('1 = 0')->paginate(27);
-        }
+        try {
+            if (! filled($queryText)) {
+                return Martyr::query()->whereRaw('1 = 0')->paginate(27);
+            }
 
-        // 3. توحيد بناء النتيجة بالـ paginate لكلا الحالتين (بالهوية أو بالاسم)
-        if (is_numeric($queryText)) {
+            if (is_numeric($queryText)) {
+                return Martyr::query()
+                    ->where('national_id', $queryText)
+                    ->paginate(27);
+            }
+
             return Martyr::query()
-                ->where('national_id', $queryText)
+                ->searchArabicName($queryText)
                 ->paginate(27);
-        }
+        } catch (Throwable $exception) {
+            report($exception);
 
-        return Martyr::query()
-            ->searchArabicName($queryText)
-            ->paginate(27);
+            return response()->json([
+                'message' => 'تعذّر إكمال البحث حاليًا. يرجى المحاولة لاحقًا.',
+            ], 500);
+        }
     }
 
     public function martyr_search()
