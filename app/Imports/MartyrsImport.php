@@ -20,9 +20,6 @@ class MartyrsImport implements ToModel, WithChunkReading
         if (!empty($row[4])) {
             $bornDate = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[4]))->format('Y-m-d');
         }
-        static $i = 0;
-        $i++;
-        dump($i, $row);
         return new Martyr([
             'name_en' => $row[1],
             'name_ar' => $row[2],
