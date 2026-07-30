@@ -143,11 +143,14 @@
                     'Accept': 'application/json'          // تحديد صيغة الاستجابة المطلوبة
                 }
             })
-                .then(res => {
+                .then(async res => {
+                    const data = await res.json();
+
                     if (!res.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(data.message || 'حدث خطأ غير معروف');
                     }
-                    return res.json();
+
+                    return data;
                 })
                 .then(data => {
                     let totalCount = data.total || 0;
@@ -181,7 +184,13 @@
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-rose-100 border border-rose-300 text-rose-700 text-center p-3 rounded-xl text-sm">حدث خطأ أثناء جلب البيانات، يرجى المحاولة لاحقاً!</p>`);
+
+                    wrapper_navigation.innerHTML = `
+        <p class="bg-rose-100 border border-rose-300 text-rose-700 text-center p-3 rounded-xl text-sm">
+            ${error.message}
+        </p>
+    `;
+
                     search_icon.classList.add('fa-magnifying-glass');
                     search_icon.classList.remove('fa-spinner', 'fa-spin');
                 });

@@ -68,15 +68,17 @@ class MainController extends Controller
 
     public function search(Request $req)
     {
-        if (! $req->wantsJson() && ! $req->ajax()) {
-            return response()->json(['message' => 'Invalid Request'], 400);
-        }
-
-        $queryText = trim((string) $req->query('q', ''));
-
         try {
-            if (! filled($queryText)) {
-                return Martyr::query()->whereRaw('1 = 0')->paginate(27);
+            if (!$req->wantsJson() && !$req->ajax()) {
+                return response()->json(['message' => 'Invalid Request'], 400);
+            }
+
+            $queryText = trim((string) $req->query('q', ''));
+
+            if (!filled($queryText)) {
+                return Martyr::query()
+                    ->whereRaw('1 = 0')
+                    ->paginate(27);
             }
 
             if (is_numeric($queryText)) {
@@ -88,11 +90,14 @@ class MainController extends Controller
             return Martyr::query()
                 ->searchArabicName($queryText)
                 ->paginate(27);
-        } catch (Throwable $exception) {
+
+        } catch (\Throwable $exception) {
             report($exception);
 
             return response()->json([
-                'message' => 'تعذّر إكمال البحث حاليًا. يرجى المحاولة لاحقًا.',
+                'message' => $exception->getMessage(),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
             ], 500);
         }
     }
