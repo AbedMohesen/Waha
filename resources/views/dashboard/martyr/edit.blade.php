@@ -1,61 +1,14 @@
-<x-guest-layout>
-    <h1 class="text-xl m-4 text-center">تعديل بيانات شهيد </h1>
-<form class="grid gap-8" method="POST" action="{{ route('dashboard.martyr.update', $martyr) }}">        @csrf
-    @method('PUT')
-        <!-- national_id -->
-        <div>
-            <x-input-label for="national_id" :value="__('national_id')" />
-            <x-text-input id="national_id" class="block mt-1 w-full" type="text" name="national_id"
-                :value="$martyr->national_id" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('national_id')" class="mt-2" />
+<x-app-layout>
+    <x-slot name="header"><p class="oasis-kicker">إدارة السجل</p><h1 class="oasis-heading mt-1">تعديل بيانات السجل</h1><p class="oasis-copy mt-1">{{ $martyr->name_ar }}</p></x-slot>
+    <div class="oasis-container py-8 sm:py-12"><form method="POST" action="{{ route('dashboard.martyr.update', $martyr) }}" class="oasis-card mx-auto max-w-3xl p-6 sm:p-8">@csrf @method('PUT')
+        <div class="grid gap-5 md:grid-cols-2">
+            <div><x-input-label for="national_id" value="الرقم الوطني" /><x-text-input id="national_id" name="national_id" type="text" :value="old('national_id', $martyr->national_id)" required autofocus /><x-input-error :messages="$errors->get('national_id')" /></div>
+            <div><x-input-label for="name_en" value="الاسم بالإنجليزية" /><x-text-input id="name_en" name="name_en" type="text" :value="old('name_en', $martyr->name_en)" /><x-input-error :messages="$errors->get('name_en')" /></div>
+            <div class="md:col-span-2"><x-input-label for="name_ar" value="الاسم بالعربية" /><x-text-input id="name_ar" name="name_ar" type="text" :value="old('name_ar', $martyr->name_ar)" required /><x-input-error :messages="$errors->get('name_ar')" /></div>
+            <div><x-input-label for="sex" value="الجنس" /><select id="sex" name="sex" required class="oasis-input"><option value="m" @selected(old('sex', $martyr->sex) === 'm')>ذكر</option><option value="f" @selected(old('sex', $martyr->sex) === 'f')>أنثى</option></select><x-input-error :messages="$errors->get('sex')" /></div>
+            <div><x-input-label for="age" value="العمر" /><x-text-input id="age" name="age" type="text" :value="old('age', $martyr->age)" required /><x-input-error :messages="$errors->get('age')" /></div>
+            <div><x-input-label for="date_barth" value="تاريخ الميلاد" /><x-text-input id="date_barth" name="date_barth" type="date" :value="old('date_barth', $martyr->born)" required /><x-input-error :messages="$errors->get('date_barth')" /></div>
         </div>
-        <!-- name_en -->
-        <div>
-            <x-input-label for="name_en" :value="__('Name in english')" />
-            <x-text-input id="name_en" class="block mt-1 w-full" type="text" name="name_en" :value="$martyr->name_en"
-                required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('name_en')" class="mt-2" />
-        </div>
-        <!-- name_ar -->
-        <div>
-            <x-input-label for="name_ar" :value="__('Name in arabic')" />
-            <x-text-input id="name_ar" class="block mt-1 w-full" type="text" name="name_ar" :value="$martyr->name_ar"
-                required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('name_ar')" class="mt-2" />
-        </div>
-        <!-- sex -->
-        <div>
-            <x-input-label for="sex" :value="__('sex')" />
-            <select required name="sex" id="sex"
-                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                required>
-                <option @selected($martyr->sex === 'm') value="m">male</option>
-                <option @selected($martyr->sex === 'f') value="f">female</option>
-            </select>
-            <x-input-error :messages="$errors->get('sex')" class="mt-2" />
-        </div>
-        <!-- age -->
-        <div>
-            <x-input-label for="age" :value="__('age')" />
-            <x-text-input id="age" class="block mt-1 w-full" type="text" name="age" :value="$martyr->age" required
-                autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('age')" class="mt-2" />
-        </div>
-        <!-- date_barth -->
-        <div>
-            <x-input-label for="date_barth" :value="__('date_barth')" />
-            <x-text-input id="date_barth" class="block mt-1 w-full" type="date" name="date_barth"
-                :value="$martyr->born" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('date_barth')" class="mt-2" />
-        </div>
-
-        <div class="flex justify-between">
-            <x-primary-button class="ms-3">
-                {{ __('Update') }}
-            </x-primary-button>
-            <a href="{{ route('dashboard.martyr.index') }}">Cancel</a>
-        </div>
-
-        </div>
-    </form>
-</x-guest-layout>
+        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-black/5 pt-6 sm:flex-row sm:justify-end"><a href="{{ route('dashboard.martyr.index') }}" class="oasis-button oasis-button-outline">إلغاء</a><x-primary-button>حفظ التعديلات</x-primary-button></div>
+    </form></div>
+</x-app-layout>

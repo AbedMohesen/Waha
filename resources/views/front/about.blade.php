@@ -1,47 +1,106 @@
 @extends('front.layout')
 
-@section('title', 'من نحن | واحة الشهداء')
+@section('title', 'عن الواحة | واحة الشهداء')
 
 @section('content')
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <section class="overflow-hidden rounded-3xl bg-emerald-950 text-white shadow-lg">
-            <div class="px-6 py-12 sm:px-12 sm:py-16 text-center">
-                <span class="inline-flex items-center gap-2 rounded-full bg-amber-400/15 px-4 py-2 text-xs font-bold text-amber-300">
-                    <i class="fa-solid fa-landmark"></i>
-                    واحة الشهداء
-                </span>
-                <h1 class="mt-6 text-3xl sm:text-4xl font-bold">من نحن</h1>
-                <p class="mt-5 max-w-3xl mx-auto text-sm sm:text-base leading-8 text-emerald-50">
-                    واحة الشهداء منصة توثيقية تحفظ أسماء الشهداء وسيرهم وذكرياتهم، وتسهّل على العائلات والباحثين الوصول إلى المعلومات الموثقة باحترام وخصوصية.
-                </p>
+    <!-- Hero Feature Band: House Green (#1E3932) -->
+    <section class="oasis-band">
+        <div class="oasis-container py-14 text-center sm:py-20">
+            <span class="oasis-pill-gold">
+                <i class="fa-solid fa-certificate text-[10px]"></i>
+                عن المنصة
+            </span>
+            <h1 class="mx-auto mt-4 max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                مساحة رقمية تحفظ الذاكرة باحترام.
+            </h1>
+            <p class="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/75 sm:text-lg">
+                واحة الشهداء منصة توثيقية إنسانية تجمع السجل والقصص والذكريات في تجربة هادئة، رصينة، ومصممة بأعلى معايير التوثيق.
+            </p>
+        </div>
+    </section>
+
+    <!-- Core Pillars: White Section with 12px Cards -->
+    <section class="bg-white">
+        <div class="oasis-container oasis-section">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <p class="oasis-kicker">المبادئ والركائز</p>
+                <h2 class="oasis-heading mt-1">قيم العمل التوثيقي</h2>
+                <p class="oasis-copy mt-1">المعايير التي توجّه كل خطوة في بناء وتطوير منصة الواحة.</p>
             </div>
-        </section>
 
-        <section class="grid md:grid-cols-3 gap-6 mt-10">
-            <article class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <i class="fa-solid fa-book-open text-2xl text-emerald-700"></i>
-                <h2 class="mt-4 text-lg font-bold text-slate-800">رسالتنا</h2>
-                <p class="mt-3 text-sm leading-7 text-gray-600">تقديم سجل رقمي منظم يخلّد الأسماء والقصص، ويجعل الذاكرة الوطنية متاحة للأجيال القادمة.</p>
-            </article>
-            <article class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <i class="fa-solid fa-shield-halved text-2xl text-emerald-700"></i>
-                <h2 class="mt-4 text-lg font-bold text-slate-800">التوثيق باحترام</h2>
-                <p class="mt-3 text-sm leading-7 text-gray-600">نحرص على عرض المعلومات بصورة لائقة، دقيقة، وسهلة الاستخدام مع مراعاة خصوصية البيانات.</p>
-            </article>
-            <article class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <i class="fa-solid fa-people-group text-2xl text-emerald-700"></i>
-                <h2 class="mt-4 text-lg font-bold text-slate-800">للمجتمع</h2>
-                <p class="mt-3 text-sm leading-7 text-gray-600">نجمع بين العائلات والباحثين والمجتمع في مساحة تحفظ الذكرى وتدعم الوصول إلى السجل.</p>
-            </article>
-        </section>
+            <div class="grid gap-6 md:grid-cols-3">
+                <article class="oasis-card p-6 sm:p-8 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-oasis-mint text-oasis-green">
+                            <i class="fa-solid fa-book-open text-base"></i>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-oasis-house">رسالتنا</h3>
+                        <p class="oasis-copy mt-3">
+                            تنظيم السجل الوطني والقصص التوثيقية في منصة سهلة الاستخدام تحفظ الأسماء وتسهّل الوصول إليها للأسر والباحثين والأجيال القادمة.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-black/5 text-xs font-semibold text-oasis-accent">
+                        دقة وتخليد مستمر
+                    </div>
+                </article>
 
-        <section class="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-6 sm:p-8 text-center">
-            <h2 class="text-xl font-bold text-emerald-950">هل لديك ملاحظة أو معلومة موثقة؟</h2>
-            <p class="mt-2 text-sm text-gray-600">يسعدنا استقبال ملاحظاتكم ومساعدتكم في تحسين السجل.</p>
-            <a href="{{ route('front.contact') }}" class="inline-flex items-center gap-2 mt-5 rounded-xl bg-emerald-700 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-800 transition">
-                <i class="fa-solid fa-envelope"></i>
-                اتصل بنا
-            </a>
-        </section>
-    </main>
+                <article class="oasis-card p-6 sm:p-8 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-oasis-mint text-oasis-green">
+                            <i class="fa-solid fa-shield-halved text-base"></i>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-oasis-house">توثيق باحترام</h3>
+                        <p class="oasis-copy mt-3">
+                            نقدّم المحتوى بلغة هادئة ومحترمة، مع الالتزام التام بقدسية الذكرى ودقة البيانات بعيدًا عن أي توظيف عابر.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-black/5 text-xs font-semibold text-oasis-accent">
+                        أمانة تاريخية وإنسانية
+                    </div>
+                </article>
+
+                <article class="oasis-card p-6 sm:p-8 flex flex-col justify-between hover:-translate-y-1">
+                    <div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-oasis-mint text-oasis-green">
+                            <i class="fa-solid fa-people-group text-base"></i>
+                        </div>
+                        <h3 class="mt-6 text-xl font-bold text-oasis-house">خدمة المجتمع</h3>
+                        <p class="oasis-copy mt-3">
+                            مساحة تلتقي فيها رسائل التقدير والتعازي النبيلة، وتتيح للجميع المساهمة في استكمال البيانات والذكريات الموثقة.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-black/5 text-xs font-semibold text-oasis-accent">
+                        تكامل وترابط إنساني
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribution / Collaboration Section: Warm Gold Lightest Surface (#faf6ee) -->
+    <section class="bg-oasis-cream">
+        <div class="oasis-container oasis-section">
+            <div class="oasis-card-gold p-8 sm:p-12 grid gap-8 lg:grid-cols-[1.2fr_.8fr] items-center">
+                <div>
+                    <span class="oasis-pill-gold">
+                        <i class="fa-solid fa-hands-holding-circle text-[10px]"></i>
+                        تواصل ومساهمة
+                    </span>
+                    <h2 class="oasis-heading mt-3 text-oasis-house">كل معلومة موثقة تصنع فرقًا.</h2>
+                    <p class="oasis-copy mt-4 max-w-xl text-black/70">
+                        إذا كانت لديك صور تذكارية، تفاصيل سيرة، أو أي معلومة تفيد في تدقيق وتحديث السجل، يسعدنا استقبالها ومراجعتها بعناية فائقة.
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 lg:justify-end">
+                    <a href="{{ route('front.contact') }}" class="oasis-button oasis-button-primary">
+                        <span>تواصل معنا للمساهمة</span>
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                    </a>
+                    <a href="{{ route('front.search') }}" class="oasis-button oasis-button-outline">
+                        تصفح السجل
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 @endsection

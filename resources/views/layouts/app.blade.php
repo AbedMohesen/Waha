@@ -1,55 +1,38 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <link rel="icon" href="{{ asset('assets/img/icon1.png') }}">
-
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Application Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <title>{{ $title ?? 'لوحة التحكم | واحة الشهداء' }}</title>
-
-    <style>[x-cloak] { display: none !important; }</style>
-</head>
-
-<body class="bg-gray-50 text-slate-800 antialiased min-h-screen">
-    <div class="min-h-screen flex flex-col">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#1E3932">
+        <link rel="icon" href="{{ asset('assets/img/icon1.png') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <title>{{ config('app.name', 'واحة الشهداء') }}</title>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="oasis-page antialiased">
         @include('layouts.navigation')
 
-        <!-- Page Heading -->
         @isset($header)
-            <header class="bg-white border-b border-gray-200">
-                <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
+            <header class="border-b border-black/5 bg-white">
+                <div class="oasis-container py-6 sm:py-8">
                     {{ $header }}
                 </div>
             </header>
         @endisset
 
-        <!-- Page Content -->
-        <main class="flex-grow">
+        <main class="pb-16">
             {{ $slot }}
         </main>
 
-        <!-- Dashboard Footer -->
-        <footer class="bg-emerald-950 text-gray-400 border-t border-emerald-900 py-5 mt-12">
-            <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-                <p>&copy; {{ date('Y') }} واحة الشهداء. جميع الحقوق محفوظة.</p>
-                <a href="{{ route('front.index') }}"
-                    class="hover:text-amber-400 transition">
-                    الانتقال إلى الموقع العام
-                </a>
-            </div>
+        <footer class="oasis-band border-t border-white/10 py-8 text-center text-xs text-white/70">
+            <p>واحة الشهداء — مساحة تحفظ الذاكرة باحترام.</p>
         </footer>
-    </div>
 
-    {{ $js ?? '' }}
-</body>
+        @isset($js)
+            {{ $js }}
+        @endisset
+    </body>
 </html>

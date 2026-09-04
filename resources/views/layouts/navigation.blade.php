@@ -1,229 +1,53 @@
-<nav x-data="{ open: false }"
-    class="bg-emerald-950 text-white border-b border-emerald-900 sticky top-0 z-50 shadow-md">
+<nav x-data="{ open: false }" class="oasis-nav sticky top-0 z-50 bg-white" aria-label="التنقل الرئيسي">
+    <div class="oasis-container flex min-h-16 items-center justify-between gap-4 py-3 sm:min-h-[72px] lg:min-h-[83px]">
+        <a href="{{ route('dashboard.index') }}" class="flex items-center gap-3 text-oasis-green">
+            <img class="h-11 w-11 rounded-full border border-oasis-mint bg-white p-1" src="{{ asset('assets/img/icon.png') }}" alt="">
+            <span class="text-sm font-extrabold sm:text-base">واحة الشهداء</span>
+            <span class="hidden border-r border-black/10 pr-3 text-xs font-semibold text-black/50 sm:inline">الإدارة</span>
+        </a>
 
-    <!-- ========================================== -->
-    <!-- START: DESKTOP NAVIGATION -->
-    <!-- ========================================== -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20">
-
-            <!-- Logo -->
-            <a href="{{ route('dashboard.index') }}"
-                class="flex items-center gap-2.5 font-bold text-lg sm:text-xl text-amber-400 hover:text-amber-300 transition">
-                <img class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover"
-                    src="{{ asset('assets/img/icon.png') }}"
-                    alt="شعار واحة الشهداء">
-                <div class="hidden xs:block">
-                    <span class="block tracking-wide">واحة الشهداء</span>
-                    <span class="block mt-0.5 text-[10px] font-medium text-gray-400">
-                        لوحة الإدارة
-                    </span>
-                </div>
-            </a>
-
-            <!-- Desktop Navigation Links -->
-            <div class="hidden md:flex items-center gap-2">
-                <a href="{{ route('dashboard.index') }}"
-                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
-                    {{ request()->routeIs('dashboard.index')
-                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
-                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>لوحة التحكم</span>
-                </a>
-
-                <a href="{{ route('dashboard.martyr.index') }}"
-                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
-                    {{ request()->routeIs('dashboard.martyr.*')
-                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
-                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
-                    <i class="fa-solid fa-user-shield"></i>
-                    <span>إدارة الشهداء</span>
-                </a>
-
-                <a href="{{ route('dashboard.condolences.index') }}"
-                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
-                    {{ request()->routeIs('dashboard.condolences.*')
-                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
-                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
-                    <i class="fa-solid fa-comments"></i>
-                    <span>مراجعة التعزيات</span>
-                    @if ($pendingCondolencesCount > 0)
-                        <span
-                            data-pending-condolences-count="{{ $pendingCondolencesCount }}"
-                            class="rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white"
-                        >
-                            {{ $pendingCondolencesCount }}
-                        </span>
-                    @endif
-                </a>
-
-                <a href="{{ route('dashboard.homepage-content.index') }}"
-                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
-                    {{ request()->routeIs('dashboard.homepage-content.*')
-                        ? 'bg-amber-500 text-emerald-950 shadow-sm'
-                        : 'text-gray-300 hover:bg-emerald-900 hover:text-amber-400' }}">
-                    <i class="fa-solid fa-house-circle-check"></i>
-                    <span>إدارة محتوى الصفحة الرئيسية</span>
-                </a>
-
-                <a href="{{ route('front.index') }}"
-                    class="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-gray-300 hover:bg-emerald-900 hover:text-amber-400 transition">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                    <span>عرض الموقع</span>
-                </a>
-            </div>
-
-            <!-- User Dropdown -->
-            <div class="hidden md:flex items-center">
-                <x-dropdown align="left" width="56">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center gap-3 rounded-xl border border-emerald-800 bg-emerald-900/70 px-3.5 py-2 text-sm text-gray-200 hover:border-amber-500/50 hover:text-amber-300 transition focus:outline-none">
-                            <span
-                                class="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-emerald-950">
-                                <i class="fa-solid fa-user"></i>
-                            </span>
-
-                            <span class="max-w-32 truncate font-semibold">
-                                {{ Auth::user()->name ?? 'المستخدم' }}
-                            </span>
-
-                            <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <div class="px-4 py-3 border-b border-gray-100 text-right">
-                            <p class="text-sm font-bold text-slate-800">
-                                {{ Auth::user()->name ?? '' }}
-                            </p>
-                            <p class="mt-1 text-xs text-gray-500 truncate">
-                                {{ Auth::user()->email ?? '' }}
-                            </p>
-                        </div>
-
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <span class="flex items-center gap-2">
-                                <i class="fa-solid fa-user-gear text-emerald-700"></i>
-                                <span>الملف الشخصي</span>
-                            </span>
-                        </x-dropdown-link>
-
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault(); this.closest('form').submit();">
-                                <span class="flex items-center gap-2 text-rose-600">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                    <span>تسجيل الخروج</span>
-                                </span>
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Mobile Toggle -->
-            <button @click="open = !open"
-                type="button"
-                aria-label="فتح القائمة"
-                class="md:hidden flex h-10 w-10 items-center justify-center rounded-xl text-gray-300 hover:bg-emerald-900 hover:text-white transition focus:outline-none">
-                <i class="fa-solid text-xl" :class="open ? 'fa-xmark' : 'fa-bars'"></i>
-            </button>
-        </div>
-    </div>
-    <!-- ========================================== -->
-    <!-- END: DESKTOP NAVIGATION -->
-    <!-- ========================================== -->
-
-    <!-- ========================================== -->
-    <!-- START: MOBILE NAVIGATION -->
-    <!-- ========================================== -->
-    <div x-cloak x-show="open" x-transition
-        class="md:hidden bg-emerald-900 border-t border-emerald-800 px-4 py-4">
-
-        <div class="space-y-2">
-            <a href="{{ route('dashboard.index') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
-                {{ request()->routeIs('dashboard.index')
-                    ? 'bg-amber-500 text-emerald-950'
-                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
-                <i class="fa-solid fa-chart-line w-5 text-center"></i>
-                <span>لوحة التحكم</span>
-            </a>
-
-            <a href="{{ route('dashboard.martyr.index') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
-                {{ request()->routeIs('dashboard.martyr.*')
-                    ? 'bg-amber-500 text-emerald-950'
-                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
-                <i class="fa-solid fa-user-shield w-5 text-center"></i>
-                <span>إدارة الشهداء</span>
-            </a>
-
-            <a href="{{ route('dashboard.condolences.index') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
-                {{ request()->routeIs('dashboard.condolences.*')
-                    ? 'bg-amber-500 text-emerald-950'
-                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
-                <i class="fa-solid fa-comments w-5 text-center"></i>
-                <span>مراجعة التعزيات</span>
+        <div class="hidden items-center gap-5 lg:flex">
+            <a href="{{ route('dashboard.index') }}" @class(['oasis-nav-link', 'oasis-nav-link-active' => request()->routeIs('dashboard.index')])>نظرة عامة</a>
+            <a href="{{ route('dashboard.martyr.index') }}" @class(['oasis-nav-link', 'oasis-nav-link-active' => request()->routeIs('dashboard.martyr.*')])>السجلات</a>
+            <a href="{{ route('dashboard.condolences.index') }}" @class(['oasis-nav-link', 'oasis-nav-link-active' => request()->routeIs('dashboard.condolences.*')])>
+                <span>التعزيات</span>
                 @if ($pendingCondolencesCount > 0)
-                    <span
-                        data-pending-condolences-count="{{ $pendingCondolencesCount }}"
-                        class="mr-auto rounded-full bg-rose-600 px-2 py-0.5 text-[10px] font-bold text-white"
-                    >
-                        {{ $pendingCondolencesCount }}
-                    </span>
+                    <span data-pending-condolences-count="{{ $pendingCondolencesCount }}" class="mr-1.5 inline-grid min-w-5 place-items-center rounded-full bg-oasis-gold px-1.5 py-0.5 text-[11px] font-bold text-oasis-house">{{ $pendingCondolencesCount }}</span>
                 @endif
             </a>
-
-            <a href="{{ route('dashboard.homepage-content.index') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold
-                {{ request()->routeIs('dashboard.homepage-content.*')
-                    ? 'bg-amber-500 text-emerald-950'
-                    : 'text-gray-200 hover:bg-emerald-800 hover:text-amber-300' }}">
-                <i class="fa-solid fa-house-circle-check w-5 text-center"></i>
-                <span>إدارة محتوى الصفحة الرئيسية</span>
-            </a>
-
-            <a href="{{ route('front.index') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-200 hover:bg-emerald-800 hover:text-amber-300">
-                <i class="fa-solid fa-arrow-up-right-from-square w-5 text-center"></i>
-                <span>عرض الموقع</span>
-            </a>
+            <a href="{{ route('dashboard.homepage-content.index') }}" @class(['oasis-nav-link', 'oasis-nav-link-active' => request()->routeIs('dashboard.homepage-content.*')])>الواجهة الرئيسية</a>
         </div>
 
-        <div class="mt-4 border-t border-emerald-800 pt-4">
-            <div class="mb-3 px-3">
-                <p class="text-sm font-bold text-white">
-                    {{ Auth::user()->name ?? '' }}
-                </p>
-                <p class="mt-1 text-xs text-gray-400">
-                    {{ Auth::user()->email ?? '' }}
-                </p>
+        <div class="hidden items-center gap-2 lg:flex">
+            <a href="{{ route('front.index') }}" class="oasis-button oasis-button-outline text-xs">عرض الموقع</a>
+            <x-dropdown align="left" width="48">
+                <x-slot name="trigger">
+                    <button class="oasis-button oasis-button-dark text-xs" type="button">{{ Str::limit(Auth::user()->name ?? 'الحساب', 18) }} <i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                </x-slot>
+                <x-slot name="content">
+                    <div class="bg-oasis-cream p-2">
+                        <x-dropdown-link :href="route('profile.edit')">الملف الشخصي</x-dropdown-link>
+                        <form method="POST" action="{{ route('logout') }}">@csrf <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">تسجيل الخروج</x-dropdown-link></form>
+                    </div>
+                </x-slot>
+            </x-dropdown>
+        </div>
+
+        <button type="button" class="grid h-11 w-11 place-items-center rounded-full border border-black/15 text-oasis-house lg:hidden" x-on:click="open = ! open" x-bind:aria-expanded="open.toString()" aria-label="فتح القائمة">
+            <i class="fa-solid" x-bind:class="open ? 'fa-xmark' : 'fa-bars'"></i>
+        </button>
+    </div>
+
+    <div x-show="open" x-transition class="border-t border-black/5 bg-oasis-cream p-4 lg:hidden">
+        <div class="oasis-container grid gap-1 px-0">
+            <a href="{{ route('dashboard.index') }}" class="rounded-lg px-4 py-3 text-sm font-semibold hover:bg-white">نظرة عامة</a>
+            <a href="{{ route('dashboard.martyr.index') }}" class="rounded-lg px-4 py-3 text-sm font-semibold hover:bg-white">إدارة السجلات</a>
+            <a href="{{ route('dashboard.condolences.index') }}" class="rounded-lg px-4 py-3 text-sm font-semibold hover:bg-white">مراجعة التعزيات</a>
+            <a href="{{ route('dashboard.homepage-content.index') }}" class="rounded-lg px-4 py-3 text-sm font-semibold hover:bg-white">محتوى الواجهة الرئيسية</a>
+            <div class="mt-2 flex flex-wrap gap-2 border-t border-black/5 pt-3">
+                <a href="{{ route('front.index') }}" class="oasis-button oasis-button-outline text-xs">عرض الموقع</a>
+                <a href="{{ route('profile.edit') }}" class="oasis-button oasis-button-dark text-xs">الملف الشخصي</a>
             </div>
-
-            <a href="{{ route('profile.edit') }}"
-                class="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-gray-200 hover:bg-emerald-800 hover:text-amber-300">
-                <i class="fa-solid fa-user-gear w-5 text-center"></i>
-                <span>الملف الشخصي</span>
-            </a>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <button type="submit"
-                    class="mt-1 w-full flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-rose-300 hover:bg-rose-950/30 hover:text-rose-200 transition">
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
-                    <span>تسجيل الخروج</span>
-                </button>
-            </form>
         </div>
     </div>
-    <!-- ========================================== -->
-    <!-- END: MOBILE NAVIGATION -->
-    <!-- ========================================== -->
 </nav>

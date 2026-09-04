@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 : (string) $martyr;
 
             return Limit::perMinute(3)
-                ->by($request->ip().'|'.$martyrKey)
+                ->by($request->ip() . '|' . $martyrKey)
                 ->response(function (Request $request, array $headers) use ($martyr) {
                     return redirect()
                         ->route('martyr', $martyr)
@@ -50,6 +50,14 @@ class AppServiceProvider extends ServiceProvider
                 'pendingCondolencesCount',
                 Condolence::query()->pending()->count(),
             );
+        });
+
+        \Illuminate\Support\Facades\URL::resolveMissingNamedRoutesUsing(function (string $name, array $parameters = [], bool $absolute = true) {
+            if ($name === 'dashboard') {
+                return route('dashboard.index', $parameters, $absolute);
+            }
+
+            return null;
         });
     }
 }

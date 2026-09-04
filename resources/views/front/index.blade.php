@@ -1,197 +1,208 @@
 @extends('front.layout')
-@section('title',' الرئيسية | واحة الشهداء')
+
+@section('title', 'الرئيسية | واحة الشهداء')
+
 @section('content')
-    <!-- ========================================== -->
-    <!-- START: HERO SECTION (قسم الواجهة الرئيسية) -->
-    <!-- ========================================== -->
-    <section class="relative bg-emerald-950 text-white py-16 sm:py-24 overflow-hidden">
-        <!-- الخلفية الجمالية -->
-        <div
-            class="absolute inset-0  from-emerald-900/40 via-emerald-950 to-emerald-950">
+    <!-- Hero Feature Band: House Green Solid Surface (#1E3932) -->
+    <section class="oasis-band overflow-hidden">
+        <div class="oasis-container grid min-h-[30rem] items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.2fr_.8fr] lg:py-20">
+            <div class="max-w-2xl">
+                <span class="oasis-pill-gold">
+                    <i class="fa-solid fa-certificate text-[10px]"></i>
+                    سجل الذاكرة الوطنية
+                </span>
+                <h1 class="mt-4 text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+                    ذاكرة تُحفظ، وقصصٌ تبقى حيّة.
+                </h1>
+                <p class="mt-6 max-w-xl text-base leading-8 text-white/70 sm:text-lg">
+                    منصة هادئة للبحث في السجل التوثيقي، قراءة القصص، وحفظ الذكريات باحترام ووضوح للأسر والباحثين.
+                </p>
+                <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+                    <a href="{{ route('front.search') }}" class="oasis-button oasis-button-light">
+                        <span>ابحث في السجل</span>
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
+                    </a>
+                    <a href="#featured-stories" class="oasis-button oasis-button-on-dark-outline">
+                        اكتشف القصص
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column Visual Graphic -->
+            <div class="relative mx-auto grid aspect-square w-full max-w-xs place-items-center rounded-full border border-white/15 bg-oasis-uplift p-8 sm:max-w-sm shadow-2xl">
+                <div class="absolute inset-5 rounded-full border border-white/10"></div>
+                <div class="absolute inset-12 rounded-full border border-white/10"></div>
+                <div class="relative text-center">
+                    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/10 text-oasis-gold shadow-sm">
+                        <i class="fa-solid fa-book-open text-3xl"></i>
+                    </div>
+                    <p class="mt-4 text-xl font-bold tracking-tight text-white">واحة الشهداء</p>
+                    <p class="mt-1 text-xs text-white/70">مساحة توثيقية إنسانية</p>
+                </div>
+            </div>
         </div>
-        <div class="absolute -top-16 -right-16 w-96 h-96 bg-amber-500/30 rounded-full blur-3xl"></div>
+    </section>
 
-        <div class="relative max-w-5xl mx-auto px-4 text-center">
-            <h1
-                class="font-serif text-3xl sm:text-5xl font-bold tracking-wide text-white leading-tight sm:leading-snug mb-6">
-                سجل الخلود والتكريم لشهداء الوطن
-            </h1>
-
-            <p class="text-gray-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-8">
-                نستذكر بطولاتهم، ونخلد أسماءهم وقصصهم العطرة لتبقى منارة يسترشد بها الأجيال.
-            </p>
-
-            <!-- زر الانتقال للبحث السريع -->
-            <div class="flex flex-wrap justify-center items-center gap-4">
-                <a href="{{ route('front.search') }}"
-                    class="flex items-center gap-2.5 bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold px-6 py-3.5 rounded-xl text-sm sm:text-base transition shadow-lg hover:shadow-amber-500/20">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>البحث في قاعدة البيانات</span>
+    <!-- Featured Martyrs Section: Pure White Canvas -->
+    <section class="bg-white">
+        <div class="oasis-container oasis-section">
+            <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+                <div>
+                    <p class="oasis-kicker">مختارات موثقة</p>
+                    <h2 class="oasis-heading mt-1">أبرز السجلات</h2>
+                    <p class="oasis-copy mt-1">سجلات مختارة من قاعدة البيانات التوثيقية الوطنية.</p>
+                </div>
+                <a href="{{ route('front.search') }}" class="oasis-button oasis-button-outline self-start text-xs sm:self-auto">
+                    <span>عرض السجل كاملًا</span>
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
                 </a>
             </div>
-        </div>
-    </section>
-    <!-- ========================================== -->
-    <!-- END: HERO SECTION -->
-    <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- START: FEATURED MARTYRS (أبرز الشهداء) -->
-    <!-- ========================================== -->
-    <section id="featured-martyrs" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 border-b border-gray-200 pb-4">
-            <div>
-                <span class="text-amber-600 font-bold text-xs tracking-widest uppercase flex items-center gap-1.5 mb-1">
-                    <i class="fa-solid fa-award"></i> مختارات الأدمن
-                </span>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">أبرز الشهداء</h2>
-            </div>
-            <a href="{{ route('front.search') }}"
-                class="text-xs sm:text-sm text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 transition">
-                <span>عرض كافّة السجلات</span>
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-        </div>
-
-        <!-- شبكة بطاقات الشهداء -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            @forelse ($featuredMartyrs as $martyr)
-                @php
-                    $profilePath = $martyr->profileImg?->img_path;
-                    $profileExists = filled($profilePath)
-                        && \Illuminate\Support\Facades\Storage::disk('martyr_images')->exists($profilePath);
-                    $profileUrl = $profileExists
-                        ? asset('assets/img/' . ltrim(str_replace('\\', '/', $profilePath), '/'))
-                        : asset('assets/img/No-photo-m.png');
-                @endphp
-
-                <article
-                    class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 group flex flex-col justify-between">
-                    <div class="p-5 text-center">
-                        <img
-                            src="{{ $profileUrl }}"
-                            alt="صورة الشهيد {{ $martyr->name_ar }}"
-                            class="mx-auto mb-4 h-20 w-20 rounded-full border-2 border-emerald-100 bg-emerald-50 object-cover"
-                        >
-                        <h3 class="font-bold text-base text-slate-800 mb-1 group-hover:text-emerald-700 transition" dir="rtl">
-                            {{ $martyr->name_ar }}
-                        </h3>
-                        @if ($martyr->name_en)
-                            <p class="text-xs text-gray-500 mb-3">{{ $martyr->name_en }}</p>
-                        @endif
-                        <span
-                            class="inline-block bg-amber-50 text-amber-700 border border-amber-200 text-[11px] px-2.5 py-1 rounded-full font-medium">
-                            العمر: {{ $martyr->age ?: '-' }}
-                        </span>
-                    </div>
-                    <a href="{{ route('martyr', $martyr->id) }}"
-                        class="block bg-gray-50 border-t border-gray-100 text-center py-2.5 text-xs text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-                        عرض التفاصيل الكاملة &larr;
-                    </a>
-                </article>
-            @empty
-                <p class="col-span-full rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
-                    لم يتم اختيار شهداء مميزين حتى الآن.
-                </p>
-            @endforelse
-        </div>
-
-    </section>
-    <!-- ========================================== -->
-    <!-- END: FEATURED MARTYRS -->
-    <!-- ========================================== -->
-
-    <!-- ========================================== -->
-    <!-- START: FEATURED STORIES (أبرز القصص) -->
-    <!-- ========================================== -->
-    <section id="featured-stories" class="py-12 bg-emerald-950/5 border-y border-emerald-900/10 scroll-mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="mb-8">
-                <span class="text-amber-600 font-bold text-xs tracking-widest uppercase flex items-center gap-1.5 mb-1">
-                    <i class="fa-solid fa-book-open"></i> سيرة وحكاية
-                </span>
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">أبرز القصص العطرة</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @forelse ($featuredStories as $story)
-                    <article
-                        class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center gap-2 text-xs text-amber-600 font-semibold mb-3">
-                                <i class="fa-solid fa-bookmark"></i>
-                                <span>سيرة عطرة</span>
+            <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                @forelse ($featuredMartyrs as $martyr)
+                    @php
+                        $path = $martyr->profileImg?->img_path;
+                        $image = filled($path)
+                            ? asset('assets/img/'.ltrim(str_replace('\\', '/', $path), '/'))
+                            : asset('assets/img/No-photo-m.png');
+                    @endphp
+                    <article class="oasis-card overflow-hidden group flex flex-col justify-between hover:-translate-y-1">
+                        <div class="flex flex-col items-center justify-center bg-oasis-cream p-6 text-center border-b border-black/5">
+                            <div class="relative">
+                                <img class="h-24 w-24 rounded-full border-4 border-white object-cover shadow-card transition duration-300 group-hover:scale-105" src="{{ $image }}" alt="صورة {{ $martyr->name_ar }}" loading="lazy">
                             </div>
-                            <h3 class="font-bold text-lg text-slate-800 mb-2 leading-snug">{{ $story->title }}</h3>
-                            <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 line-clamp-3">
-                                {{ \Illuminate\Support\Str::limit(strip_tags($story->content), 180) }}
-                            </p>
+                            <h3 class="mt-4 text-base font-bold text-oasis-house">{{ $martyr->name_ar }}</h3>
+                            @if($martyr->name_en)
+                                <p class="mt-0.5 text-xs text-black/50" dir="ltr">{{ $martyr->name_en }}</p>
+                            @endif
+                            <div class="mt-4">
+                                <span class="oasis-pill-mint text-xs">
+                                    العمر: {{ $martyr->age ? $martyr->age . ' سنة' : 'غير مسجل' }}
+                                </span>
+                            </div>
                         </div>
-                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between gap-3 text-xs text-gray-500">
-                            <span>عن الشهيد: {{ $story->martyr->name_ar }}</span>
-                            <a href="{{ route('martyr', $story->martyr) }}" class="shrink-0 text-emerald-700 font-bold hover:underline">
-                                قراءة القصة
-                            </a>
-                        </div>
+
+                        <a href="{{ route('martyr', $martyr) }}" class="flex items-center justify-between px-5 py-4 text-xs font-bold text-oasis-accent transition hover:bg-oasis-mint/40 hover:text-oasis-green">
+                            <span>عرض السجل التوثيقي</span>
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
                     </article>
                 @empty
-                    <p class="col-span-full rounded-xl bg-white p-6 text-center text-sm text-gray-500">
-                        لم يتم اختيار قصص مميزة حتى الآن.
-                    </p>
+                    <p class="oasis-empty col-span-full">لم يتم اختيار سجلات مميزة حتى الآن.</p>
                 @endforelse
             </div>
         </div>
     </section>
-    <!-- ========================================== -->
-    <!-- END: FEATURED STORIES -->
-    <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- START: FEATURED GALLERY (أبرز الصور) -->
-    <!-- ========================================== -->
-    <section id="featured-gallery" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
-        <div class="mb-8 border-b border-gray-200 pb-4">
-            <span class="text-amber-600 font-bold text-xs tracking-widest uppercase flex items-center gap-1.5 mb-1">
-                <i class="fa-solid fa-images"></i> الأرشيف المصور
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-bold text-slate-800">أبرز الصور والتوثيقات</h2>
-        </div>
+    <!-- Featured Stories Section: Warm Neutral Canvas (#f2f0eb) -->
+    <section id="featured-stories" class="bg-oasis-cream">
+        <div class="oasis-container oasis-section">
+            <div class="max-w-2xl">
+                <p class="oasis-kicker">سيرة وحكاية</p>
+                <h2 class="oasis-heading mt-1">قصص تستحق أن تُروى</h2>
+                <p class="oasis-copy mt-1">لمحات إنسانية منتقاة بعناية من أرشيف الواحة لحفظ الذكرى.</p>
+            </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            @forelse ($featuredMemoryImages as $memoryImage)
-                @php
-                    $memoryPath = $memoryImage->img_path;
-                    $memoryExists = filled($memoryPath)
-                        && \Illuminate\Support\Facades\Storage::disk('martyr_images')->exists($memoryPath);
-                    $memoryUrl = $memoryExists
-                        ? asset('assets/img/' . ltrim(str_replace('\\', '/', $memoryPath), '/'))
-                        : asset('assets/img/No-photo-m.png');
-                @endphp
-
-                <a
-                    href="{{ route('martyr', $memoryImage->martyr) }}"
-                    class="relative group rounded-2xl overflow-hidden bg-gray-200 aspect-square shadow-sm"
-                >
-                    <img
-                        src="{{ $memoryUrl }}"
-                        alt="{{ $memoryImage->caption ?: 'صورة ذكرى للشهيد '.$memoryImage->martyr->name_ar }}"
-                        class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                    >
-                    <span class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/75 via-transparent to-transparent p-4 text-xs text-white">
-                        <strong>{{ $memoryImage->martyr->name_ar }}</strong>
-                        @if (filled($memoryImage->caption))
-                            <span class="mt-1 line-clamp-2">{{ $memoryImage->caption }}</span>
-                        @endif
-                    </span>
-                </a>
-            @empty
-                <p class="col-span-full rounded-xl bg-gray-50 p-6 text-center text-sm text-gray-500">
-                    لم يتم اختيار صور ذكريات مميزة حتى الآن.
-                </p>
-            @endforelse
+            <div class="mt-8 grid gap-6 lg:grid-cols-3">
+                @forelse ($featuredStories as $story)
+                    <article class="oasis-card flex min-h-64 flex-col p-6 sm:p-7 hover:-translate-y-1">
+                        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-oasis-mint text-oasis-green">
+                            <i class="fa-solid fa-quote-right text-sm"></i>
+                        </div>
+                        <h3 class="mt-5 text-lg font-bold text-oasis-house">{{ $story->title }}</h3>
+                        <p class="mt-3 line-clamp-3 text-sm leading-7 text-black/60">
+                            {{ Str::limit(strip_tags($story->content), 180) }}
+                        </p>
+                        <div class="mt-auto flex items-center justify-between border-t border-black/5 pt-5 text-xs">
+                            <span class="font-semibold text-black/55">{{ $story->martyr?->name_ar }}</span>
+                            <a class="font-bold text-oasis-accent hover:text-oasis-green transition" href="{{ route('martyr', $story->martyr) }}">
+                                اقرأ القصة ←
+                            </a>
+                        </div>
+                    </article>
+                @empty
+                    <p class="oasis-empty col-span-full">لا توجد قصص مميزة لعرضها الآن.</p>
+                @endforelse
+            </div>
         </div>
     </section>
-    <!-- ========================================== -->
-    <!-- END: FEATURED GALLERY -->
-    <!-- ========================================== -->
+
+    <!-- Search Callout Feature Band: House Green (#1E3932) -->
+    <section class="oasis-band">
+        <div class="oasis-container oasis-section grid items-center gap-8 lg:grid-cols-[1fr_1.1fr]">
+            <div>
+                <span class="oasis-pill-gold">
+                    <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
+                    البحث في السجل
+                </span>
+                <h2 class="mt-3 text-3xl font-semibold leading-tight text-white sm:text-4xl">
+                    الوصول إلى المعلومة يجب أن يكون هادئًا وبسيطًا.
+                </h2>
+                <p class="mt-4 max-w-xl text-base leading-8 text-white/70">
+                    ابحث بالاسم العربي أو الرقم الوطني، ثم انتقل مباشرة إلى الصفحة التي تجمع تفاصيل السجل والقصص والذكريات.
+                </p>
+                <a href="{{ route('front.search') }}" class="oasis-button oasis-button-light mt-7">
+                    <span>ابدأ البحث المتقدم</span>
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
+                </a>
+            </div>
+
+            <div class="oasis-card p-6 sm:p-8">
+                <form action="{{ route('front.search') }}" method="GET" class="space-y-4">
+                    <label for="home_search" class="oasis-label">
+                        ابحث بالاسم أو الرقم الوطني
+                    </label>
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <input id="home_search" type="search" name="q" class="oasis-input !mt-0 flex-1" placeholder="مثال: الاسم الرباعي أو الرقم الوطني">
+                        <button type="submit" class="oasis-button oasis-button-primary shrink-0">
+                            <span>بحث</span>
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs leading-6 text-black/50">
+                        ستنتقل إلى صفحة البحث لإظهار النتائج مع إمكانية التصفح المباشر.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories Photo Album: Ceramic / White -->
+    <section class="bg-white">
+        <div class="oasis-container oasis-section">
+            <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+                <div>
+                    <p class="oasis-kicker">ألبوم الذاكرة</p>
+                    <h2 class="oasis-heading mt-1">صور من الذكريات</h2>
+                    <p class="oasis-copy mt-1">صور تذكارية موثقة تحكي لمحات من السيرة.</p>
+                </div>
+                <a href="{{ route('front.search') }}" class="oasis-button oasis-button-outline self-start text-xs sm:self-auto">
+                    <span>اكتشف السجلات</span>
+                    <i class="fa-solid fa-arrow-left text-xs"></i>
+                </a>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-4">
+                @forelse ($featuredMemoryImages as $memory)
+                    @php
+                        $memoryPath = $memory->img_path;
+                        $memoryUrl = filled($memoryPath)
+                            ? asset('assets/img/'.ltrim(str_replace('\\', '/', $memoryPath), '/'))
+                            : asset('assets/img/No-photo-m.png');
+                    @endphp
+                    <a href="{{ route('martyr', $memory->martyr) }}" class="group oasis-card overflow-hidden hover:-translate-y-1">
+                        <div class="overflow-hidden aspect-square">
+                            <img class="h-full w-full object-cover transition duration-300 group-hover:scale-105" src="{{ $memoryUrl }}" alt="{{ $memory->caption ?: 'صورة ذكرى' }}" loading="lazy">
+                        </div>
+                        <div class="p-4 bg-white">
+                            <p class="truncate text-xs font-bold text-oasis-house">{{ $memory->caption ?: $memory->martyr?->name_ar }}</p>
+                            <p class="mt-1 text-[11px] text-black/50">{{ $memory->martyr?->name_ar }}</p>
+                        </div>
+                    </a>
+                @empty
+                    <p class="oasis-empty col-span-full">لا توجد صور مميزة لعرضها الآن.</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
 @endsection

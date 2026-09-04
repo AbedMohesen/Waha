@@ -1,59 +1,61 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight flex justify-between">
-            {{ __('Martyr') }}
-        <a href="{{ route('dashboard.martyr.create') }}"><button class="p-2 px-4 rounded-full bg-green-600 text-white">Add Martyr</button></a>
-        </h2>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <p class="oasis-kicker">إدارة السجلات</p>
+                <h1 class="oasis-heading mt-1">سجلات الشهداء</h1>
+            </div>
+
+            <a href="{{ route('dashboard.martyr.create') }}" class="oasis-button oasis-button-primary text-xs">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span>إضافة سجل جديد</span>
+            </a>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <main class="py-4 sm:py-5 lg:py-7">
+    <div class="oasis-container py-8 sm:py-10">
+        <!-- Search Section: White Card -->
+        <section class="oasis-card p-6 sm:p-8">
+            <div class="flex items-center gap-2 mb-4">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-oasis-mint text-oasis-green text-xs">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <h2 class="text-base font-bold text-oasis-house">بحث في سجلات الإدارة</h2>
+            </div>
 
-            <!-- Search Form Section -->
-            <section id="search-section" class="max-w-5xl mx-auto scroll-mt-24">
-                <h2 class="text-base sm:text-lg lg:text-xl font-semibold text-gray-700 mb-4 sm:mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass text-emerald-700"></i>
-                    <span>ابحث عن الشهيد</span>
-                </h2>
-
-                <form class="relative" id="search_form">
-                    <input autocomplete="off" type="search" name="q" placeholder="اكتب اسم الشهيد أو رقم الهوية..."
-                        class="w-full h-12 sm:h-14 lg:h-16 rounded-2xl bg-white border border-gray-200 shadow-sm pr-4 sm:pr-5 pl-12 sm:pl-14 text-sm sm:text-base text-gray-700 placeholder:text-gray-400 transition duration-200 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none search_input">
-                    <button type="submit" aria-label="بحث"
-                        class="search_btn absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-gray-500 hover:bg-emerald-100 hover:text-emerald-700 transition">
-                        <i class="fa-solid fa-magnifying-glass text-base sm:text-xl search_icon"></i>
+            <form id="search_form" class="relative">
+                <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-oasis-accent search_icon"></i>
+                    <input autocomplete="off" type="search" name="q" placeholder="اكتب اسم الشهيد أو الرقم الوطني (3 أحرف على الأقل)..."
+                        class="oasis-input !py-3.5 pr-11 text-sm sm:text-base search_input">
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button type="submit" class="oasis-button oasis-button-primary search_btn text-xs">
+                        <span>تنفيذ البحث</span>
+                        <i class="fa-solid fa-arrow-left text-xs"></i>
                     </button>
-                </form>
-
-                <div class="border-b border-gray-200 mt-6 sm:mt-8">
-
                 </div>
-            </section>
+            </form>
+        </section>
 
-            <!-- Dynamic Search Results Section -->
-            <section class="max-w-5xl mx-auto mt-6">
-                <!-- Status Messages & Navigation Alerts -->
-                <div class="wrapper_navigation m-2"></div>
+        <!-- Status & Results Section -->
+        <section class="mt-8">
+            <!-- Status Messages -->
+            <div class="wrapper_navigation mb-5"></div>
 
-                <!-- Counter Result -->
-                <div class="wrapper_count text-center text-xl sm:text-2xl my-5 text-gray-700 font-medium"></div>
+            <!-- Counter Result -->
+            <div class="wrapper_count mb-6 text-center sm:text-right text-base font-semibold text-oasis-house"></div>
 
-                <!-- Items Grid -->
-                <div class="wrapper_list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+            <!-- Items Grid -->
+            <div class="wrapper_list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
-                </div>
-
-                <!-- Pagination Container -->
-                <div id="pagination_container" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
-            </section>
-
-        </main>
-        </div>
+            <!-- Pagination Container -->
+            <div id="pagination_container" class="flex justify-center items-center gap-2 mt-8 flex-wrap"></div>
+        </section>
     </div>
+
     <x-slot name="js">
-<script>
-        // --- عناصر الواجهة ---
+    <script>
         const search_form = document.getElementById('search_form');
         const search_btn = document.querySelector('.search_btn');
         const input = document.querySelector('.search_input');
@@ -65,13 +67,12 @@
 
         let currentQuery = '';
 
-        // --- حدث البحث عند التقديم ---
         search_form.onsubmit = function (e) {
             e.preventDefault();
             let text = input.value.trim();
             if (!text || text.length < 3) {
                 wrapper_navigation.innerHTML = '';
-                wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-amber-100 border border-amber-300 text-amber-800 text-center p-3 rounded-xl text-sm font-medium">الرجاء إدخال الاسم أو رقم الهوية للبدء بالبحث</p>`);
+                wrapper_navigation.insertAdjacentHTML('afterbegin', `<div class="oasis-alert-error text-center text-sm font-semibold">يرجى إدخال 3 أحرف على الأقل (الاسم أو الرقم الوطني) للبدء بالبحث.</div>`);
                 return;
             }
 
@@ -79,7 +80,6 @@
             fetchData(text, 1);
         }
 
-        // --- دالة جلب البيانات عبر AJAX (Fetch) ---
         function fetchData(text, page = 1) {
             wrapper_navigation.innerHTML = '';
             search_icon.classList.remove('fa-magnifying-glass');
@@ -92,51 +92,62 @@
             fetch(`{{ route('search') }}?q=${encodeURIComponent(text)}&page=${page}`, {
                 method: 'GET',
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest', // ترويسة هامة للتحقق من طلب الـ AJAX في لارافيل
-                    'Accept': 'application/json'          // تحديد صيغة الاستجابة المطلوبة
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
                 }
             })
                 .then(res => {
-                    if (!res.ok) {
-                        throw new Error('Network response was not ok');
-                    }
+                    if (!res.ok) throw new Error('تعذر تنفيذ الطلب');
                     return res.json();
                 })
                 .then(data => {
-                    console.log(data);
                     let totalCount = data.total || 0;
-                    wrapper_count.insertAdjacentHTML('afterbegin', `عدد نتائج البحث: (<span class="text-emerald-700 font-bold">${totalCount}</span>)`);
+                    wrapper_count.innerHTML = `تم العثور على <span class="oasis-pill-mint font-bold mx-1">${totalCount}</span> سجل`;
 
                     if (totalCount > 0) {
-                        wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-center p-2.5 rounded-xl text-sm font-medium">تم العثور على نتائج المطابقة</p>`);
+                        wrapper_navigation.innerHTML = `<div class="oasis-alert-success text-center text-xs font-semibold">تم العثور على سجلات مطابقة لمعايير البحث.</div>`;
                     } else {
-                        wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-gray-100 border border-gray-200 text-gray-600 text-center p-3 rounded-xl text-sm">لم يتم العثور على بيانات تطابق مدخلات البحث...</p>`);
+                        wrapper_navigation.innerHTML = `<div class="oasis-empty text-center">لم يتم العثور على بيانات تطابق مدخلات البحث. جرّب كتابة اسم مختلف.</div>`;
                     }
 
-                    // عرض بطاقات النتائج
                     let itemsData = data.data || [];
                     itemsData.forEach((d) => {
-                        let url = `{{ url('/martyr') }}/${d.id}`;
                         let url_show = `{{ url('/dashboard/martyr') }}/${d.id}`;
                         let url_edit = `{{ url('/dashboard/martyr') }}/${d.id}/edit`;
                         let url_delete = `{{ url('/dashboard/martyr') }}/${d.id}`;
-                        let item = `<div
-                        class="cursor-pointer bg-white hover:bg-emerald-50/50 border border-gray-200 hover:border-emerald-300 p-5 text-center rounded-2xl text-slate-800 hover:text-emerald-800 font-bold shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-center items-center gap-2 group">
-                        <p class="text-base sm:text-lg"> ${d.name_ar}</p>
-                        <div>
-                            <a href="${url_show}"><button type="button" class="p-2 bg-sky-600 rounded-2xl text-white px-4">View</button></a>
-                            <a href="${url_edit}"><button class="p-2 bg-green-500 rounded-2xl text-white px-4">Edit</button></a>
-                            <form class='inline' action="${url_delete}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <button onclick="return confirm('Are you sure ?')" class="p-2 bg-red-500 rounded-2xl text-white px-4">Delete</button>
-                            </form>
-                        </div>
-                    </div>`;
+                        let item = `
+                        <article class="oasis-card p-5 flex flex-col justify-between hover:-translate-y-0.5">
+                            <div class="flex items-start gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-oasis-mint text-oasis-green font-bold text-sm">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <h3 class="font-bold text-base text-oasis-house truncate">${d.name_ar}</h3>
+                                    <p class="text-xs text-black/50 mt-1">الرقم الوطني: ${d.national_id || 'غير مسجل'}</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 pt-4 border-t border-black/5 flex flex-wrap items-center justify-between gap-2">
+                                <div class="flex items-center gap-2">
+                                    <a href="${url_show}" class="oasis-button oasis-button-primary text-xs !min-h-9 !px-3.5">
+                                        <span>عرض</span>
+                                    </a>
+                                    <a href="${url_edit}" class="oasis-button oasis-button-outline text-xs !min-h-9 !px-3.5">
+                                        <span>تعديل</span>
+                                    </a>
+                                </div>
+                                <form action="${url_delete}" method="POST" class="inline" onsubmit="return confirm('هل أنت متأكد من حذف هذا السجل نهائيًا؟')">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="oasis-button oasis-button-danger text-xs !min-h-9 !px-3">
+                                        <span>حذف</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </article>`;
                         wrapper_list.insertAdjacentHTML('beforeend', item);
                     });
 
-                    // إنشاء أزرار الترقيم
                     if (data.last_page > 1) {
                         renderPagination(data);
                     }
@@ -146,43 +157,38 @@
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                    wrapper_navigation.insertAdjacentHTML('afterbegin', `<p class="bg-rose-100 border border-rose-300 text-rose-700 text-center p-3 rounded-xl text-sm">حدث خطأ أثناء جلب البيانات، يرجى المحاولة لاحقاً!</p>`);
+                    wrapper_navigation.innerHTML = `<div class="oasis-alert-error text-center text-xs">حدث خطأ أثناء جلب البيانات، يرجى المحاولة لاحقاً.</div>`;
                     search_icon.classList.add('fa-magnifying-glass');
                     search_icon.classList.remove('fa-spinner', 'fa-spin');
                 });
         }
 
-        // --- دالة توليد أزرار الترقيم (Pagination) ---
         function renderPagination(paginationData) {
             const currentPage = paginationData.current_page;
             const lastPage = paginationData.last_page;
-
             let html = '';
 
-            // زر السابق
             if (currentPage > 1) {
-                html += `<button onclick="fetchData('${currentQuery}', ${currentPage - 1})" class="px-3.5 py-2 border border-gray-200 rounded-xl bg-white text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition text-sm font-medium shadow-sm">السابق</button>`;
+                html += `<button onclick="fetchData('${currentQuery}', ${currentPage - 1})" class="oasis-button oasis-button-outline text-xs !min-h-9 !px-3">السابق</button>`;
             } else {
-                html += `<button disabled class="px-3.5 py-2 border border-gray-100 rounded-xl bg-gray-50 text-gray-300 text-sm font-medium cursor-not-allowed">السابق</button>`;
+                html += `<button disabled class="oasis-button oasis-button-outline text-xs !min-h-9 !px-3 opacity-40 cursor-not-allowed">السابق</button>`;
             }
 
-            // أرقام الصفحات
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(lastPage, currentPage + 2);
 
             for (let i = startPage; i <= endPage; i++) {
                 if (i === currentPage) {
-                    html += `<button class="h-9 w-9 rounded-xl bg-emerald-700 text-white font-bold text-sm shadow-sm">${i}</button>`;
+                    html += `<button class="oasis-button oasis-button-primary text-xs !min-h-9 !w-9 !p-0">${i}</button>`;
                 } else {
-                    html += `<button onclick="fetchData('${currentQuery}', ${i})" class="h-9 w-9 rounded-xl border border-gray-200 bg-white text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition text-sm font-medium shadow-sm">${i}</button>`;
+                    html += `<button onclick="fetchData('${currentQuery}', ${i})" class="oasis-button oasis-button-outline text-xs !min-h-9 !w-9 !p-0">${i}</button>`;
                 }
             }
 
-            // زر التالي
             if (currentPage < lastPage) {
-                html += `<button onclick="fetchData('${currentQuery}', ${currentPage + 1})" class="px-3.5 py-2 border border-gray-200 rounded-xl bg-white text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition text-sm font-medium shadow-sm">التالي</button>`;
+                html += `<button onclick="fetchData('${currentQuery}', ${currentPage + 1})" class="oasis-button oasis-button-outline text-xs !min-h-9 !px-3">التالي</button>`;
             } else {
-                html += `<button disabled class="px-3.5 py-2 border border-gray-100 rounded-xl bg-gray-50 text-gray-300 text-sm font-medium cursor-not-allowed">التالي</button>`;
+                html += `<button disabled class="oasis-button oasis-button-outline text-xs !min-h-9 !px-3 opacity-40 cursor-not-allowed">التالي</button>`;
             }
 
             pagination_container.innerHTML = html;
@@ -190,5 +196,3 @@
     </script>
     </x-slot>
 </x-app-layout>
-
-
