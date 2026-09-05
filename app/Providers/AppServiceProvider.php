@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production') || request()->isSecure() || request()->header('x-forwarded-proto') === 'https') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
         RateLimiter::for('condolences', function (Request $request) {
             $martyr = $request->route('martyr');
             $martyrKey = $martyr instanceof Martyr
